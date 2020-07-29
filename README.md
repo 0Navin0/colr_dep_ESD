@@ -2,6 +2,8 @@
 
 Code to use AUM to get wp_ESD with TINK==2(HODs interpolated)
 
+Uses outputted color dep hods from "hod_red_blue" project as points for interpolation in AUM. 
+
 # Particular use case
 
 1)Compare this wp_ESD to confirm/reject the predictions given in arXiv:1902.01566. 
