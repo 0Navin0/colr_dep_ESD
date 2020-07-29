@@ -74,13 +74,12 @@ q.fac = 1.0
  
 a = h.hod(p, q) 
 
-Mr_max = np.array(range(-19,-23,-1))
+Mr_max = np.arange(-19,-23,-1)
 # number of bins np.size(Mr_max)
 bins = np.array(['%d,%d'%(l-1,l) for l in Mr_max ])
 
-# central HOD 
 # first write code to get only one file then we'll import other files in a loop based on magbin and colr.
-# for now I got ahead with red HODs.
+# for now I go  ahead with red HODs.
 
 #set up sampled hod locations
 galtype=['cen','sat']
@@ -89,12 +88,24 @@ sampled_hod_loc = "/home/navin/git/hod_red_blue/bestfit_binned_hods/"
 cen_hod_loc, sat_hod_loc = [sampled_hod_loc+ x for x in galtype]
 
 #store file_names based on colr-galtype in increasing brightness oreder 
-temp = [glob(cen_hod_loc+f"/*{x}*") for x in colr] + [glob(sat_hod_loc+f"/*{x}*") for x in colr]
-[x.sort() for x in f]
-redcen_files, blucen_files, redsat_files, blusat_files = temp 
+#temp = [glob(cen_hod_loc+f"/*{x}*") for x in colr] + [glob(sat_hod_loc+f"/*{x}*") for x in colr]
+#[x.sort() for x in temp]
+#redcen_files, blucen_files, redsat_files, blusat_files = temp 
+temp0 = [glob(cen_hod_loc+f"/*{x}*") for x in colr] 
+temp1 = [glob(sat_hod_loc+f"/*{x}*") for x in colr]
+[x.sort() for x in temp0]
+[x.sort() for x in temp1]
 
 # iterate over "elements" and "elements and elements" of temp
 # Do all the ESD calls inside inner most loop.
 # so from here everythin will be looped...let's write code for the inner most loop(ii)---set up iteration-index ii.
 # Note: the negative values in binned_colr  dep hods---(Ncen_red,Ncen_blue,Nsat_red,Nsat_blue) 
-logM, Ncen_red = np.loadtxt(redcen_files[ii],dtype={'names':("logM","Ncen_red",), 'formats': ('float','float',)},comments="#", unpack=True)
+for ii,col in enumerate(colr):
+    for jj,colr_pair in enumerate(zip(temp0[ii],temp1[ii])):
+        #cen hod
+        logM, hod0 = np.loadtxt(colr_pair[0],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
+        #sat hod
+        _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
+        # initialize spline, TINK==2
+        a.init_Nc_spline(getdblarr(logM), getdblarr(hod0), hod0.size)
+        a.init_Ns_spline(getdblarr(logM), getdblarr(hod1), hod1.size)
