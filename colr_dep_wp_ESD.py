@@ -103,7 +103,7 @@ for ii,col in enumerate(colr):
         #sat hod
         _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
         # initialize spline, TINK==2
-        a.init_Nc_spl(getdblarr(logM), getdblarr(hod0), hod0.size)
-        a.init_Ns_spl(getdblarr(logM), getdblarr(hod1), hod1.size)
+        a.init_Nc_spl(getdblarr(logM[hod0>0]), getdblarr(np.log10(hod0[hod0>0])), hod0[hod0>0].size)
+        a.init_Ns_spl(getdblarr(logM[hod1>0]), getdblarr(np.log10(hod1[hod1>0])), hod1[hod1>1].size)
         #debug step
         print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
