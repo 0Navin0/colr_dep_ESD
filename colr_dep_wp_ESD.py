@@ -30,6 +30,7 @@ import cosmology as cc
 import numpy as np
 from subprocess import call
 from glob import glob
+import pandas as pd
 
 # getting c-array from a np array
 def getdblarr(r):
@@ -43,8 +44,6 @@ def getnparr(r,n):
     for i in range(n):
         temp[i]=r[i]
     return temp
-
-
 
 # initialize cosmology class object
 # the following cosmo parameters are taken from Niladri's paper
@@ -92,12 +91,28 @@ temp0 = [glob(cen_hod_loc+f"/*{x}*") for x in colr]
 temp1 = [glob(sat_hod_loc+f"/*{x}*") for x in colr]
 [x.sort() for x in temp0]
 [x.sort() for x in temp1]
+#get the number of magbins and magbins to match the correct redshift to each sample.
+mag_order=[temp0[0][jj].split('_')[-1].split('.csv')[0] for jj in range(len(temp0[0]))]
+
+#get mean redshift from the samples(pr.magbin.dat) in the order same as mag_order
+df = pd.read_csv("/home/navin/git/hod_red_blue/pr.magbin.dat", delim_whitespace=True)
+#z_order1=[(f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}",df.z[ii]) for ii in range(df.mag2.size)]
+z_order=[f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}" for ii in range(df.mag2.size) ]
+df['z_order']=z_order
+
+#define proj-radii and esdbins for ESD caclucation from aum.
+#rp = 
+#esdbins =
 
 # Note: the negative values in binned_colr dep hods---(Ncen_red,Ncen_blue,Nsat_red,Nsat_blue) 
-# a bug in model??
+# a drawback of model?? --> Yes.These negative values are unphysical.
 for ii,col in enumerate(colr):
     for jj,colr_pair in enumerate(zip(temp0[ii],temp1[ii])):
-        print(ii,col,jj,colr_pair)
+        #get redshift of the galaxy sample(NYU catalog safe7 sample) in magbin-mag_order
+        #z = next((z_order1[ii][1] for ii in range(len(z_order1)) if mag_order[jj]==z_order1[ii][0])) #another way with z_order1
+        z = df.z[df['z_order']==mag_order[jj]]
+        print(ii,col,jj,colr_pair,mag_order[jj],z)
+
         #cen hod
         logM, hod0 = np.loadtxt(colr_pair[0],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
         #sat hod
@@ -106,8 +121,16 @@ for ii,col in enumerate(colr):
         hod0[hod0<=0]=1e-50 
         hod1[hod1<=0]=1e-50
         print(f"cen:{hod0.size}, sat:{hod1.size}")
+
         # initialize spline, TINK==2
         a.init_Nc_spl(getdblarr(logM), getdblarr(np.log10(hod0)), hod0.size)
         a.init_Ns_spl(getdblarr(logM), getdblarr(np.log10(hod1)), hod1.size)
         #debug step
         print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
+        print(f"{esdbins}, projected radii={rp}")
+        esdrp = getdblarr(rp)
+        esd = getdblarr(np.zeros(esdbins))
+        a.ESD(z,esdbins,esdrp,esd,esdbins+4,reset=True)
+        wls = getnparr(esd,esdbins)
+        print(col,mag_order[jj],wls)
+
