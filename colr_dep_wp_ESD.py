@@ -74,9 +74,9 @@ q.fac = 1.0
  
 a = h.hod(p, q) 
 
-Mr_max = np.arange(-19,-23,-1)
-# number of bins np.size(Mr_max)
-bins = np.array(['%d,%d'%(l-1,l) for l in Mr_max ])
+#Mr_max = np.arange(-19,-23,-1)
+## number of bins np.size(Mr_max)
+#bins = np.array(['%d,%d'%(l-1,l) for l in Mr_max ])
 
 # first write code to get only one file then we'll import other files in a loop based on magbin and colr.
 # for now I go  ahead with red HODs.
@@ -97,10 +97,13 @@ temp1 = [glob(sat_hod_loc+f"/*{x}*") for x in colr]
 # a bug in model??
 for ii,col in enumerate(colr):
     for jj,colr_pair in enumerate(zip(temp0[ii],temp1[ii])):
+        print(ii,col,jj,colr_pair)
         #cen hod
         logM, hod0 = np.loadtxt(colr_pair[0],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
         #sat hod
         _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
         # initialize spline, TINK==2
-        a.init_Nc_spline(getdblarr(logM), getdblarr(hod0), hod0.size)
-        a.init_Ns_spline(getdblarr(logM), getdblarr(hod1), hod1.size)
+        a.init_Nc_spl(getdblarr(logM), getdblarr(hod0), hod0.size)
+        a.init_Ns_spl(getdblarr(logM), getdblarr(hod1), hod1.size)
+        #debug step
+        print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
