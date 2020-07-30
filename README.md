@@ -1,4 +1,4 @@
-# colr_dep_wp_ESD
+# colr_dep_ESD
 
 Code to use AUM to get ESD with TINK==2(HODs interpolated)
 
