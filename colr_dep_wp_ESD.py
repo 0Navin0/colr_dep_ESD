@@ -101,8 +101,8 @@ z_order=[f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}" for ii in range(df.mag2.size) ]
 df['z_order']=z_order
 
 #define proj-radii and esdbins for ESD caclucation from aum.
-#rp = 
-#esdbins =
+rp =np.linspace(0.02,0.4,15) 
+esdbins = 15
 
 # Note: the negative values in binned_colr dep hods---(Ncen_red,Ncen_blue,Nsat_red,Nsat_blue) 
 # a drawback of model?? --> Yes.These negative values are unphysical.
@@ -110,7 +110,7 @@ for ii,col in enumerate(colr):
     for jj,colr_pair in enumerate(zip(temp0[ii],temp1[ii])):
         #get redshift of the galaxy sample(NYU catalog safe7 sample) in magbin-mag_order
         #z = next((z_order1[ii][1] for ii in range(len(z_order1)) if mag_order[jj]==z_order1[ii][0])) #another way with z_order1
-        z = df.z[df['z_order']==mag_order[jj]]
+        z = df.z.values[df['z_order']==mag_order[jj]][0]
         print(ii,col,jj,colr_pair,mag_order[jj],z)
 
         #cen hod
@@ -130,7 +130,13 @@ for ii,col in enumerate(colr):
         print(f"{esdbins}, projected radii={rp}")
         esdrp = getdblarr(rp)
         esd = getdblarr(np.zeros(esdbins))
-        a.ESD(z,esdbins,esdrp,esd,esdbins+4,reset=True)
+        a.ESD(z,esdbins,esdrp,esd,esdbins+4)
         wls = getnparr(esd,esdbins)
         print(col,mag_order[jj],wls)
 
+"""
+        #confirm the z values supplied for each magbin and col.
+        #confirm the rp and esdbins supplied.
+        #next we save the ESD for col and magbin in some file.
+        #setting hod_value = 1e-50 may cause ringing effects. Pay attention to this issue.
+"""
