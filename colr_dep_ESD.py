@@ -105,15 +105,17 @@ def esd_json(method='bestfit'):
     
     #define proj-radii and esdbins for ESD caclucation from aum
     #the radii used in observed esd by weaklens pipeline
-    rp =np.linspace(0.02,4,15) 
+    base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
+    rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
+    #rp =np.linspace(0.02,4,15) 
     esdbins = 15
     
     #store all the weak lensing signal data.
     res = defaultdict(list)
-   
+    res['rp']=list(rp)   
     #get aum ready
     a = initializeHOD()
-    
+
     # Note: the negative values in binned_colr dep hods---(Ncen_red,Ncen_blue,Nsat_red,Nsat_blue) 
     # a drawback of model?? --> Yes.These negative values are unphysical.
     for ii,col in enumerate(colr):
@@ -142,7 +144,7 @@ def esd_json(method='bestfit'):
             esd = getdblarr(np.zeros(esdbins))
             a.ESD(z,esdbins,esdrp,esd,esdbins+4)
             wls = getnparr(esd,esdbins)
-            #print(col,mag_order[jj],wls)
+            print(col,mag_order[jj],wls)
             ##ndarray objects can't be serialised to json object..so convert wls to list(wls)
             res[mag_order[jj]].append({col:list(wls)}) 
     
@@ -150,7 +152,7 @@ def esd_json(method='bestfit'):
          json.dump(res, f)
 
 if __name__=="__main__":
-    #esd_json(method="bestfit")     
+    esd_json(method="bestfit")     
     esd_json(method="fittingFunc")     
 
 
@@ -160,20 +162,27 @@ if __name__=="__main__":
 
 
 """
-	accessing red and blue EDDs from dictionary res
-	res['-19.0--20.0'][0]['red'] ,res['-20.0--21.0'][0]['red']
-	res['-19.0--20.0'][1]['blue'],res['-20.0--21.0'][1]['blue']
-"""
-
-"""
 	## to decerialise the json file into a dict:
         with open('esd_binned_colrdep.json','r') as f: 
             dic = json.load(f) 
 """
 
 """
-        #confirm the z values supplied for each magbin and col.
-        #confirm the rp and esdbins supplied.
-        #next we save the ESD for col and magbin in some file.
-        #setting hod_value = 1e-50 may cause ringing effects. Pay attention to this issue.
+	accessing red and blue EDDs from dictionary res/dic
+	dic['-19.0--20.0'][0]['red'] ,dic['-20.0--21.0'][0]['red']
+	dic['-19.0--20.0'][1]['blue'],dic['-20.0--21.0'][1]['blue']
+"""
+
+"""
+        #confirm the z values supplied for each magbin and col - done (approximated values are entered for ESD calculation.)
+
+#red_mag_bin	z_min to z_max	 	N_gal		N_red		N_blue		safe_sample from NYU(SDSS)		average 'z'(red sample)		average 'z'(blue sample)	average 'z'(red+blue) 
+#(-23,-22)	0.1000000-0.2500000	10857		8926		1931  		post_catalog.dr72safe7			0.19119226454406368 		0.18408367486891508 		0.18763797
+#(-22,-21)	0.0663000-0.1588300	73628		46021		27607		post_catalog.dr72safe8			0.12267274637529606		0.12368363747192741		0.12317819	
+#(-21,-20)*	0.0420000-0.0641700	17825		9807		8018		post_catalog.dr72safe9			0.0545910274847526 		0.05483306938051494 		0.05471205 
+#(-20,-19)	0.0268300-0.0641700	44264		19018		25246		post_catalog.dr72safe10			0.04946038991021664		0.05003913348123218		0.04974976 
+
+        #confirm the rp and esdbins supplied. - done.
+        #next we save the ESD for col and magbin in some file. - done
+        #setting hod_value = 1e-50 may cause ringing effects. Pay attention to this issue. ---- ?
 """
