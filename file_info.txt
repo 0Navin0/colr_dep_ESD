@@ -1,0 +1,5 @@
+single.bestfit, single.fittingFunc, single.bestfit.tar.gz,  single.fittingFunc.tar.gz   AND 
+overplot.bestfit, overplot.fittingFunc, overplot.bestfit.tar.gz,  overplot.fittingFunc.tar.gz
+
+....in these plots AUM calculates ESD at 15 input projected radii points...which are taken from the files which have observed signals.
+In these plots, I've removed those data points out of 15 for which I had 'nan' outputs in the 'observed' signal files. 
