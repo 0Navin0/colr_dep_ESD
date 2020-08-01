@@ -21,7 +21,6 @@ for tag in identifier:
     #for ii,colr in zip(range(len(axes)),colour): #accessing one row at a time.
     #fig,axes = plt.subplots(1,1)
     for colr in colour:
-        fig,axes = plt.subplots(1,1)
         # get data from weaklensing pipeline output to plot
         deltasigma,r,errDeltaSigma = np.loadtxt('%s%d_%s.dat'%(base,tag,colr),usecols=(5,7,12),unpack=True)
         notnan = ~np.isnan(deltasigma) & ~np.isnan(r) & ~np.isnan(errDeltaSigma)
@@ -41,10 +40,11 @@ for tag in identifier:
             esd = dic[magbin[1:][binmax==float(hdr['absmmax'])][0]][1]['blue']
      
         # when plotting one colr on one plot
-        axes.plot(rp, esd, label=f"prediction(by AUM): Niladri et al.",c=colr, marker='d',markerfacecolor='white')
+        fig,axes = plt.subplots(1,1)
+        axes.plot(rp, esd, label=f"prediction(by AUM): Niladri et al.",c=colr) #marker='d', markerfacecolor='white',
         axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', label='Observed: HSC_data', fmt='o', linewidth=1.5, capsize=5, capthick=2)
-        axes.scatter([],[],facecolors='None',label="=======")
-        axes.scatter([],[],facecolors='None',label=f"{leg1}\n{leg2}")
+        axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
+        #axes.scatter([],[],facecolors='None',label="=======")
         axes.set_xscale('log')
         axes.set_yscale('log')    
         axes.legend(loc='best', frameon=True)
@@ -54,15 +54,14 @@ for tag in identifier:
         # for common title to all the subplots
         plt.savefig(f"{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
 
-    #    # plotting red and blue on the same plot 
+    #    # plotting red and blue on the same plot (comment above block and uncomment the axes outside this loop.) 
     #    if colr=='blue':
-    #        axes.plot(rp, esd, label=f"prediction(by AUM): Niladri et al.",c=colr, marker='d',markerfacecolor='white')
+    #        axes.plot(rp, esd, label=f"prediction(by AUM): Niladri et al.",c=colr) #marker='d', markerfacecolor='white'
     #        axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', label='Observed: HSC_data', fmt='o', linewidth=1.5, capsize=5, capthick=2)
     #    else:
-    #        axes.plot(rp, esd, c=colr, marker='d',markerfacecolor='white')
+    #        axes.plot(rp, esd, c=colr) #, marker='d',markerfacecolor='white'
     #        axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', fmt='o', linewidth=1.5, capsize=5, capthick=2)
-    ##axes.scatter([],[],facecolors='None',label="=======")
-    #axes.scatter([],[],facecolors='None',label=f"{leg1}\n{leg2}")
+    #axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
     #axes.set_xscale('log')
     #axes.set_yscale('log')    
     #axes.legend(loc='best', frameon=True)
