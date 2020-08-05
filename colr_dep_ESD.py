@@ -11,12 +11,12 @@
 #__________________________________
 
 """Plan"""
-# set TINK==2 in hod.h (delete the ".../aum/build" dir and then run "python setup.py install --prefix=`pwd`/install" twice in the ".../aum/" dir. This create the ".../aum/build" dir again.)
-# import red/blue HODs which match Niladri's best fit results of Global Analysis in numpy arrays.
+# set TINK==2 in hod.h (delete the ".../aum/build" dir and then run "python setup.py install --prefix=`pwd`/install" twice in the ".../aum/" dir. This creates the ".../aum/build" dir again.)
+# import red/blue HODs which match Niladri's best fit results of Global Analysis in numpy arrays. (/home/navin/git/hod_red_blue/bestfit_binned_hods/colr)
 # convert binned logM and Nsat/Ncen (red/blue) numpy arrays into c-arrays.
 # supply these arrays appropriately to set the gsl_interpolation in hod.cpp
 # set up other input parameters to call wp_ESD func from hod.py
-# save and plot the wp_ESD signals for red/blue HODs...while using (best -fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
+# save and plot the wp_ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
 
 """Manual supply:""" 
 # sampled_hod_loc
@@ -89,7 +89,7 @@ def esd_json(method='bestfit'):
     sampled_hod_loc = "/home/navin/git/hod_red_blue/%s_binned_hods/"% method
     cen_hod_loc, sat_hod_loc = [sampled_hod_loc+ x for x in galtype]
     
-    #store file_names based on colr-galtype in increasing brightness order 
+    #store HOD file_names based on colr-galtype in increasing brightness order 
     temp0 = [glob(cen_hod_loc+f"/*{x}*") for x in colr] 
     temp1 = [glob(sat_hod_loc+f"/*{x}*") for x in colr]
     [x.sort() for x in temp0]
@@ -108,11 +108,12 @@ def esd_json(method='bestfit'):
     base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
     rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
     #rp =np.linspace(0.02,4,15) 
-    esdbins = 15
+    esdbins = rp.size
     
     #store all the weak lensing signal data.
     res = defaultdict(list)
-    res['rp']=list(rp)   
+    #ndarray objects can't be serialised to json object..so convert wls to list(rp)
+    res['rp']=list(rp)    
     #get aum ready
     a = initializeHOD()
 
@@ -133,7 +134,8 @@ def esd_json(method='bestfit'):
             hod0[hod0<=0]=1e-50 
             hod1[hod1<=0]=1e-50
             print(f"cen:{hod0.size}, sat:{hod1.size}")
-    
+            #print(f"cen:{hod0},sat:{hod1}")
+ 
             ## initialize spline, TINK==2
             a.init_Nc_spl(getdblarr(logM), getdblarr(np.log10(hod0)), hod0.size)
             a.init_Ns_spl(getdblarr(logM), getdblarr(np.log10(hod1)), hod1.size)

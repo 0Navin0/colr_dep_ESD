@@ -58,11 +58,12 @@ def plot_esd(method, single):
                 axes.set_xscale('log')
                 axes.set_yscale('log')    
                 axes.legend(loc='best', frameon=True)
+                #plt.title(f"{method} params used to get HODs.(Niladri et al.)")
                 # setting common x and y axes lables.
                 fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
                 fig.text(0.04, 0.5, '$\Delta\Sigma$ [hM$_\odot$/pc$^2]$', va='center', rotation='vertical')#, fontsize=16)
                 # for common title to all the subplots
-                plt.savefig(f"{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+                plt.savefig(f"{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             else:
                 # plotting red and blue on the same plot 
                 if colr=='blue':
@@ -79,11 +80,12 @@ def plot_esd(method, single):
             # setting common x and y axes lables.
             fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
             fig.text(0.04, 0.5, '$\Delta\Sigma$ [hM$_\odot$/pc$^2]$', va='center', rotation='vertical')#, fontsize=16)
+            #plt.title(f"{method} params used to get HODs.(Niladri et al.)")
             # for common title to all the subplots
             #plt.suptitle(r'samples used for weaklensing signal calculation (NYU_VAGC,Zehavi,Niladri)')
             #plt.suptitle('weak lensing signal around NYU-VAGC galaxy sample dr72safe%d in HSC field of sources.\n\n%s, %s'%(tag,leg1,leg2))#, fontsize=15)
             #plt.show()
-            plt.savefig(f"{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+            plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
    
 if __name__=="__main__":
     method = ['bestfit','fittingFunc']

@@ -76,7 +76,7 @@ def ratioplot_esd(method, single):
                 #fig.text(0.04, 0.5, r'$\frac{Predicted(\Delta\Sigma)}{Observed(\Delta\Sigma)}$', va='center', rotation='vertical')#, fontsize=16) #units_deltasigma=[hM$_\odot$/pc$^2]
               
                 # for common title to all the subplots
-                plt.savefig(f"{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+                plt.savefig(f"{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             
             if single==False:
                 axes.plot(rp_, ratio,c=colr) #marker='d', markerfacecolor='white'
@@ -94,7 +94,7 @@ def ratioplot_esd(method, single):
             #plt.suptitle(r'samples used for weaklensing single calculation (NYU_VAGC,Zehavi,Niladri)')
             #plt.suptitle('weak lensing signal around NYU-VAGC galaxy sample dr72safe%d in HSC field of sources.\n\n%s, %s'%(tag,leg1,leg2))#, fontsize=15)
 
-            plt.savefig(f"{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+            plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
 
 if __name__=="__main__":
     method = ['bestfit','fittingFunc']
