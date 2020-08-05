@@ -55,6 +55,7 @@ def plot_esd(method, single):
                 axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', label='Observed: HSC_data', fmt='o', linewidth=1.5, capsize=5, capthick=2)
                 axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
                 #axes.scatter([],[],facecolors='None',label="=======")
+                axes.set_ylim(0.01,3000)
                 axes.set_xscale('log')
                 axes.set_yscale('log')    
                 axes.legend(loc='best', frameon=True)
@@ -74,6 +75,7 @@ def plot_esd(method, single):
                     axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', fmt='o', linewidth=1.5, capsize=5, capthick=2)
         if single==False:
             axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
+            axes.set_ylim(0.01,3000)
             axes.set_xscale('log')
             axes.set_yscale('log')    
             axes.legend(loc='best', frameon=True)
