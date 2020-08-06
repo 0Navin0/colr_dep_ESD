@@ -107,13 +107,15 @@ def esd_json(method='bestfit'):
     #the radii used in observed esd by weaklens pipeline
     base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
     rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
-    #rp =np.linspace(0.02,4,15) 
     esdbins = rp.size
     
     #store all the weak lensing signal data.
-    res = defaultdict(list)
+    res = defaultdict(list)#esd
+    res1 = defaultdict(list)#wp
     #ndarray objects can't be serialised to json object..so convert wls to list(rp)
-    res['rp']=list(rp)    
+    res['rp']=list(rp)   
+    res1['rp']=list(np.logspace(-1,np.log10(30),50)) 
+    wpbins = len(res1['rp'])
     #get aum ready
     a = initializeHOD()
 
@@ -142,16 +144,26 @@ def esd_json(method='bestfit'):
             ## debug step
             print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
             #print(f"{esdbins}, projected radii={rp}")
+            print(f"avmass_cen={a.avmass_cen(z)},avmass_tot={a.avmass_tot(z)}")
             esdrp = getdblarr(rp)
             esd = getdblarr(np.zeros(esdbins))
             a.ESD(z,esdbins,esdrp,esd,esdbins+4)
             wls = getnparr(esd,esdbins)
             print(col,mag_order[jj],wls)
             ##ndarray objects can't be serialised to json object..so convert wls to list(wls)
-            res[mag_order[jj]].append({col:list(wls)}) 
+            res[mag_order[jj]].append({col:list(wls)})
+
+            wp_rp = getdblarr(np.array(res1['rp']))
+            wp = getdblarr(np.zeros(wpbins))
+            a.Wp(z, wpbins, wp_rp, wp, 100.0)
+            cls_sig = getnparr(wp,wpbins)
+            res1[mag_order[jj]].append({col:list(cls_sig)})
     
     with open(f"esd_{method}_magbinned_colrdep.json", "w") as f:
          json.dump(res, f)
+    
+    with open(f"Wp_{method}_magbinned_colrdep.json", "w") as f:
+         json.dump(res1, f)
 
 if __name__=="__main__":
     esd_json(method="bestfit")     
