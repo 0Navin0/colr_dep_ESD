@@ -133,8 +133,8 @@ def esd_json(method='bestfit'):
             ## sat hod
             _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
             print(f"cen:{hod0[hod0>0].size}, sat:{hod1[hod1>0].size}")
-            hod0[hod0<=0]=1e-50 
-            hod1[hod1<=0]=1e-50
+            hod0[hod0<=0]=1e-20
+            hod1[hod1<=0]=1e-20
             print(f"cen:{hod0.size}, sat:{hod1.size}")
             #print(f"cen:{hod0},sat:{hod1}")
  
