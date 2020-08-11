@@ -7,5 +7,9 @@ In these plots, I've removed those data points out of 15 for which I had 'nan' o
 colr_dep_ESD.py : calculates ESD
                 : calculates Wp (updated on 07/08/20)
 
+wp.*.dat : measured of proj 2 pt correlation func. copied from https://arxiv.org/format/1005.2413. tex file is downloaded and stored @ ./Niladri_et_al 
+
+
+
 
 

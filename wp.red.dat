@@ -1,0 +1,19 @@
+#r_p -23--22 -22--21 -21--20 -20--19  
+0.17 3158 821.7 570.9 724.0
+0.27 1300 542.0 433.1 570.7
+0.42 875.7 339.6 305.1 390.7
+0.67 633.7 201.7 206.5 257.5 
+1.1 350.4 132.4 125.8 157.1 
+1.7 164.3 83.4 82.0 95.0 
+2.7 127.3 60.3 56.8 61.3
+4.2 107.0 42.2 39.6 39.3
+6. 61.3 29.2 28.0 25.1
+10.6 35.6 18.2 17.8 14.1
+16.9 20.7 9.74 9.30 6.97
+26.8 10.2 4.68 5.47 4.23
+42.4 4.69 3.22 3.85 2.53
+#wp_bins_red: Projected Correlation Function Measurements of Red Galaxy Samples Corresponding to Magnitude Bins
+#The first column provides the pair-weighted projected separation of the bin.  
+#The subsequent columns provide the projected correlation function values $w_p(r_p)$, for the red galaxy samples
+#corresponding to the specified absolute magnitude $M_r$ bins. 
+#The diagonal terms of the error covariance matrices(of $w_p(r_p)$) are given in "wp.red.err.dat". 

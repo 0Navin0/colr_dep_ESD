@@ -1,0 +1,19 @@
+#-23--22 -22--21 -21--20 -20--19  
+40.0 8.0 8.5 8.5 
+19.6 5.4 6.9 6.6 
+11.6 3.9 4.4 6.9
+350.0 7.0 3.0 4.1
+129.8 4.4 2.3 2.8    
+62.6 2.5 2.0 2.9 
+36.9 1.9 1.8 2.5 
+32.8 1.6 1.7 2.2 
+16.8 1.1 1.6 1.9 
+13.8 1.0 1.4 1.40
+8.4 0.79 1.09 1.15
+7.1 0.61 0.84 0.96
+4.0 0.51 0.68 0.71      
+#The diagonal terms of the error covariance matrices of the projected
+#correlation function values $w_p(r_p)$, for the blue galaxy samples
+#corresponding to the specified absolute magnitude $M_r$ bins.  
+# used for "wp.blue.dat" wp_measurement data.
+

@@ -1,0 +1,20 @@
+#r_p -23--22 -22--21 -21--20 -20--19  
+0.17 273.8 131.7 108.4 87.6
+0.27 160.2 101.1 89.7 72.1 
+0.42 132.5 80.3 64.8 52.1
+0.67 111.6 77.7 58.1 48.8
+1.1 164.5 66.4 45.3 37.9 
+1.7 55.6 47.0 37.2 27.9 
+2.7 20.9 28.7 27.9 20.1 
+4.2 98.9 23.8 20.7 16.1 
+6.7 56.9 15.6 14.5 11.1 
+10.6 32.7 10.6 10.4 7.17
+16.9 25.6 6.08 6.33 3.75
+26.8 15.7 3.41 3.77 1.57
+42.3 13.6 2.07 2.95 0.33
+#wp_bins_blue: Projected Correlation Function Measurements of Blue Galaxy Samples Corresponding to Magnitude Bins
+#The first column provides the pair-weighted projected separation of the bin.  
+#The subsequent columns provide the projected correlation function values  $w_p(r_p)$, for the blue galaxy samples
+#corresponding to the specified absolute magnitude $M_r$ bins.  
+#The diagonal terms of the error covariance matrices(of $w_p(r_p)$) are given in "wp.blue.err.dat". 
+
