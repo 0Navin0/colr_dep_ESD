@@ -4,7 +4,7 @@ overplot.bestfit, overplot.fittingFunc, overplot.bestfit.tar.gz,  overplot.fitti
 ....in these plots AUM calculates ESD at 15 input projected radii points...which are taken from the files which have observed signals.
 In these plots, I've removed those data points out of 15 for which I had 'nan' outputs in the 'observed' signal files.(but negative 'deltasigma'(observed) points are still there.) 
 
-colr_dep_ESD.py : calculates ESD
+colr_dep_ESD+Wp.py : calculates ESD
                 : calculates Wp (updated on 07/08/20)
 
 wp.*.dat : measured of proj 2 pt correlation func. copied from https://arxiv.org/format/1005.2413. tex file is downloaded and stored @ ./Niladri_et_al 
