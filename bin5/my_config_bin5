@@ -1,0 +1,63 @@
+#repeat it for rbin=5 for all the samples.
+rmin: 0.5
+rmax: 5
+rbin: 5
+Omegam: 0.276
+lens:     
+    #this will be fed into lens_select() as 'lensargs'.
+    base_dir: /mnt/home/student/cnavin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/
+    type: nyu-vagc-safe
+    fil_name: post_catalog.dr72safe
+
+    #different samples to feed as lens galaxies, one at a time.
+    post: 7  
+    colr: red
+
+    #post: 7  
+    #colr: blue
+
+    #post: 8  
+    #colr: red
+
+    #post: 8  
+    #colr: blue
+
+    #post: 9  
+    #colr: red
+
+    #post: 9  
+    #colr: blue
+
+    #post: 10  
+    #colr: red
+
+    #post: 10  
+    #colr: blue
+
+source:
+    #this will be fed into source_select() as 'sourceargs'.
+
+    type: hsc-wide-s16a_v2.0
+    filetype: fits
+    format: hsc
+    fullpofz: False
+    include_corrections: True
+
+    # Blinding related
+    blinded: 0
+
+    #pofz related:
+
+    #if we don't initialize this variable, pofz takes value 0 by default.
+    pofz_type: mizuki
+    photoz_risk_best_cut: 0.5
+ 
+    ##default value, no need to uncomment.
+    #photoz_estimate: _best
+
+    ##default value 0.0 but chosing 0.0 here makes some difference in the choice we make at line 148 or 150 in 'weaklens_aroundsource.py'
+    zdiff: 0.0 
+
+outputdir: ./configs_n_signals/signal_dr72safe
+#outputpairfile: experimental_pairfile
+#output_dsigma: vagc_red_blue 

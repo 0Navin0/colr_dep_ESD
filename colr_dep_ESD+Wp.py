@@ -12,16 +12,19 @@
 
 """Plan"""
 # set TINK==2 in hod.h (delete the ".../aum/build" dir and then run "python setup.py install --prefix=`pwd`/install" twice in the ".../aum/" dir. This creates the ".../aum/build" dir again.)
-# import red/blue HODs which match Niladri's best fit results of Global Analysis in numpy arrays. (/home/navin/git/hod_red_blue/bestfit_binned_hods/colr)
+# import red/blue HODs which match Niladri's best fit results of Global Analysis in numpy arrays. (/home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat))
 # convert binned logM and Nsat/Ncen (red/blue) numpy arrays into c-arrays.
 # supply these arrays appropriately to set the gsl_interpolation in hod.cpp
-# set up other input parameters to call wp_ESD func from hod.py
-# save and plot the wp_ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
+# set up other input parameters to call ESD func from hod.py
+# save and plot the ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
+# similaryly calculate Wp_rp (clustering signal) in each bin for each color(red/blue).
 
 """Manual supply:""" 
 # sampled_hod_loc
 # cosmo() initialization parameters
-#__________________________________
+# path to 'base' variable.(to get the same radial binning as in the weaklens_pipeline for the observed signals.)
+# rbin
+ __________________________________
 
 #accessing aum
 import sys
@@ -81,7 +84,7 @@ def initializeHOD():
     return h.hod(p, q) 
 
 
-def esd_json(method='bestfit'):
+def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
     
     #set up sampled hod locations
     galtype=['cen','sat']
@@ -97,25 +100,28 @@ def esd_json(method='bestfit'):
     #get the number of magbins and magbins to match the correct redshift to each sample.
     mag_order=[temp0[0][jj].split('_')[-1].split('.csv')[0] for jj in range(len(temp0[0]))]
     
-    #get mean redshift from the samples(pr.magbin.dat) in the order same as mag_order
+    #get mean redshift for the samples(pr.magbin.dat) in the order same as mag_order
     df = pd.read_csv("/home/navin/git/hod_red_blue/pr.magbin.dat", delim_whitespace=True)
     #z_order1=[(f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}",df.z[ii]) for ii in range(df.mag2.size)]
     z_order=[f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}" for ii in range(df.mag2.size) ]
     df['z_order']=z_order
-    
+   
+     
     #define proj-radii and esdbins for ESD caclucation from aum
-    #the radii used in observed esd by weaklens pipeline
-    base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
+    #the same radii used in observed esd by weaklens pipeline
+    #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe' #for bin15--->first run.
+    #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin5/signal_dr72safe' #17Aug2020
+    base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
     rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
     esdbins = rp.size
     
     #store all the weak lensing signal data.
     res = defaultdict(list)#esd
     res1 = defaultdict(list)#wp
-    #ndarray objects can't be serialised to json object..so convert wls to list(rp)
-    res['rp']=list(rp)   
-    res1['rp']=list(np.logspace(-1,np.log10(30),50)) 
-    wpbins = len(res1['rp'])
+    #ndarray objects can't be serialised to json object..so convert np.array(rp) to list(rp)
+    if get_wp:
+        res1['rp']=list(np.logspace(-1,np.log10(30),50)) 
+        wpbins = len(res1['rp'])
     #get aum ready
     a = initializeHOD()
 
@@ -132,7 +138,8 @@ def esd_json(method='bestfit'):
             logM, hod0 = np.loadtxt(colr_pair[0],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
             ## sat hod
             _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
-            print(f"cen:{hod0[hod0>0].size}, sat:{hod1[hod1>0].size}")
+            print(f"Total number of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
+            print("Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. In some mag bins negatives come for low mass halos while for some for high mass halos.\nGo and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)")
             hod0[hod0<=0]=1e-20
             hod1[hod1<=0]=1e-20
             print(f"cen:{hod0.size}, sat:{hod1.size}")
@@ -143,31 +150,35 @@ def esd_json(method='bestfit'):
             a.init_Ns_spl(getdblarr(logM), getdblarr(np.log10(hod1)), hod1.size)
             ## debug step
             print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
-            #print(f"{esdbins}, projected radii={rp}")
+            #print(f"esdbins:{esdbins}, projected radii={rp}")
             print(f"avmass_cen={a.avmass_cen(z)},avmass_tot={a.avmass_tot(z)}")
             esdrp = getdblarr(rp)
             esd = getdblarr(np.zeros(esdbins))
             a.ESD(z,esdbins,esdrp,esd,esdbins+4)
             wls = getnparr(esd,esdbins)
-            print(col,mag_order[jj],wls)
+            print(col,mag_order[jj],'wl_signal:',wls)
             ##ndarray objects can't be serialised to json object..so convert wls to list(wls)
             res[mag_order[jj]].append({col:list(wls)})
 
-            wp_rp = getdblarr(np.array(res1['rp']))
-            wp = getdblarr(np.zeros(wpbins))
-            a.Wp(z, wpbins, wp_rp, wp, 100.0)
-            cls_sig = getnparr(wp,wpbins)
-            res1[mag_order[jj]].append({col:list(cls_sig)})
+            if get_wp:
+                wp_rp = getdblarr(np.array(res1['rp']))
+                wp = getdblarr(np.zeros(wpbins))
+                a.Wp(z, wpbins, wp_rp, wp, 100.0)
+                cls_sig = getnparr(wp,wpbins)
+                res1[mag_order[jj]].append({col:list(cls_sig)})
     
-    with open(f"esd_{method}_magbinned_colrdep.json", "w") as f:
+    call("mkdir -p ./bin{rbin}",shell=True) 
+    with open(f"./bin{rbin}/esd_{method}_magbinned_colrdep.json", "w") as f:
          json.dump(res, f)
-    
-    with open(f"Wp_{method}_magbinned_colrdep.json", "w") as f:
-         json.dump(res1, f)
+    if get_wp:
+        call(f"mkdir -p ./wp",shell=True)
+        with open(f"./wp/Wp_{method}_magbinned_colrdep.json", "w") as f:
+             json.dump(res1, f)
 
 if __name__=="__main__":
-    esd_json(method="bestfit")     
-    esd_json(method="fittingFunc")     
+    rbin = 10
+    esd_json(rbin, get_wp=False, get_esd=True, method="bestfit")     
+    esd_json(rbin, get_wp=False, get_esd=True, method="fittingFunc")     
 
 
 
@@ -199,4 +210,6 @@ if __name__=="__main__":
         #confirm the rp and esdbins supplied. - done.
         #next we save the ESD for col and magbin in some file. - done
         #setting hod_value = 1e-50 may cause ringing effects. Pay attention to this issue. ---- ?
+		yes it causes wrinkles in the plot..I changed this value to 1e-30, 1e-20...you can notice the difference.
+		Surhud says, he would never have set 1e-20, but just remove those because AUM will autometically set hod=0.0 there where(for some logM values.) it's not available for interplotation.
 """

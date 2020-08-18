@@ -1,5 +1,7 @@
 # an extension of code in "Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/plotSignal1.py"  
 
+# variables to play with: base, rbin 
+
 import matplotlib.pyplot as plt 
 from glob import glob
 import numpy as np
@@ -7,14 +9,16 @@ from astropy.io import fits
 import json
 from subprocess import call
 
-def plot_esd(method, single):
-    with open(f'./esd_{method}_magbinned_colrdep.json','r') as f: 
+def plot_esd(rbin, method, single):
+    with open(f'./bin{rbin}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
     rp = dic['rp']
     
-    base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
+    #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
+    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe'
+    #Specific to downloaded nyu_data..No need to change.
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
     colour = ['red','blue']
@@ -91,15 +95,16 @@ def plot_esd(method, single):
    
 if __name__=="__main__":
     method = ['bestfit','fittingFunc']
+    rbin = 10 #5 #15  #change it as per the config file for weaklens_pipeline
     for ii in method:
         for jj,tt in zip((True,False),("single","overplot")):
-            plot_esd(method=ii,single=jj) 
-            cmd=f"mkdir ./{tt}.{ii}"
+            plot_esd(rbin, method=ii, single=jj) 
+            cmd=f"mkdir ./bin{rbin}/{tt}.{ii}"
             call(cmd,shell=True)
-            call(f"mv *png ./{tt}.{ii}",shell=True)
-            call(f"tar -czvf ./{tt}.{ii}.tar.gz ./{tt}.{ii}",shell=True)
-    call("mkdir -p esd_plots",shell=True)
-    call("mv single* overplot* ./esd_plots",shell=True)
+            call(f"mv *png ./bin{rbin}/{tt}.{ii}",shell=True)
+            call(f"tar -czvf ./bin{rbin}/{tt}.{ii}.tar.gz ./bin{rbin}/{tt}.{ii}",shell=True)
+    call(f"mkdir -p ./bin{rbin}/esd_plots",shell=True)
+    call(f"mv ./bin{rbin}/single* ./bin{rbin}/overplot* ./bin{rbin}/esd_plots",shell=True)
 
 
 

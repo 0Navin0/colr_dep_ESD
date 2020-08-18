@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt 
 import numpy as np
 import json
+from subprocess import call
 
 def plot_wp(method, f_type):
+    #theoretical calcuated values from AUM
     with open(f'./Wp_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
@@ -49,7 +51,8 @@ def plot_wp(method, f_type):
     fig.text(0.5, 0.02, r"$r_p [h^{-1}$Mpc]", ha='center')#, fontsize=16)
     fig.text(0.04, 0.5, r"$W_p [h^{-1}$Mpc]", va='center', rotation='vertical')#, fontsize=16)
     # for common title to all the subplots
-    plt.savefig(f"{method}_Wp_allbins.{f_type}")
+    call(f"mkdir -p ./wp",shell=True)
+    plt.savefig(f"./wp/{method}_Wp_allbins.{f_type}")
             
 if __name__=="__main__":
     for key in ['bestfit','fittingFunc']:

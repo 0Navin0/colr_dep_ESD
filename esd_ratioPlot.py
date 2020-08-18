@@ -7,14 +7,15 @@ from astropy.io import fits
 import json
 from subprocess import call
 
-def ratioplot_esd(method, single):
-    with open(f'./esd_{method}_magbinned_colrdep.json','r') as f: 
+def ratioplot_esd(rbin, method, single):
+    with open(f'./bin{rbin}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
     rp = dic['rp']
  
-    base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
+    #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe' #firt run --> rbin=15
+    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/no_Fullpofz/signal_dr72safe_bin{rbin}/signal_dr72safe' #-->updated location of files
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
     colour = ['red','blue']
@@ -39,7 +40,7 @@ def ratioplot_esd(method, single):
             rp_ = np.array(rp)
 
             #debugging step
-            print(f"rp_.size={rp_.size},r.size={r.size}: should be like (15,<=15).")
+            print(f"rp_.size={rp_.size},r.size={r.size}: should be like ({rbin},<={rbin}).")
             print(f"{r==rp_}: if True apply same filter on 'rp' values as on 'r'.")
             print(f"{leg1}\nNo of nan values in \"{colr}\" esd/deltasigma,r,errDeltaSigma: {np.sum(np.isnan(deltasigma))},{np.sum(np.isnan(r))},{np.sum(np.isnan(errDeltaSigma))}")
             print(f"No of negative points in \"{colr}\" esd/deltasigma,errDeltaSigma: {np.sum(deltasigma<0)},{np.sum(errDeltaSigma<0)}" ) #\n\n
@@ -60,7 +61,7 @@ def ratioplot_esd(method, single):
             rp_ = rp_[notnan & positives] #get same points of radii at which 'deltasigma' is available. 
             esd = np.array(esd)[notnan & positives]
             #debugging step
-            print(f"predicted esd size={esd.size}\tobserved deltasigma size{deltasigma.size}\tr(weaklens output files) size={r.size}\trp(ESD_aum)={rp_.size}\n\n")
+            print(f"predicted esd.size={esd.size}\tobserved deltasigma.size{deltasigma.size}\tr(weaklens output files) size={r.size}\trp(ESD_aum)={rp_.size}\n\n")
             ratio = deltasigma/esd #obervational/theoretical
 
             if single==True:
@@ -97,6 +98,7 @@ def ratioplot_esd(method, single):
             plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
 
 if __name__=="__main__":
+    rbin = 10 #same rbin supplied in config file of weaklens_pipeline
     method = ['bestfit','fittingFunc']
     for ii in method:
         for jj,tt in zip((True,False),("single","overplot")):
