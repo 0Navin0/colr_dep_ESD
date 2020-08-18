@@ -24,7 +24,7 @@
 # cosmo() initialization parameters
 # path to 'base' variable.(to get the same radial binning as in the weaklens_pipeline for the observed signals.)
 # rbin
- __________________________________
+# __________________________________
 
 #accessing aum
 import sys
@@ -106,22 +106,21 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
     z_order=[f"{df.mag1[ii]}"+"-"+f"{df.mag2[ii]}" for ii in range(df.mag2.size) ]
     df['z_order']=z_order
    
-     
-    #define proj-radii and esdbins for ESD caclucation from aum
-    #the same radii used in observed esd by weaklens pipeline
-    #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe' #for bin15--->first run.
-    #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin5/signal_dr72safe' #17Aug2020
-    base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
-    rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
-    esdbins = rp.size
-    
-    #store all the weak lensing signal data.
-    res = defaultdict(list)#esd
-    res1 = defaultdict(list)#wp
-    #ndarray objects can't be serialised to json object..so convert np.array(rp) to list(rp)
+    if get_esd: 
+        #define proj-radii and esdbins for ESD caclucation from aum
+        #the same radii used in observed esd by weaklens pipeline
+        base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
+        rp = np.loadtxt('%s7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
+        esdbins = rp.size  
+        #store all the weak lensing signal data.
+        res = defaultdict(list)#esd
+
     if get_wp:
+        res1 = defaultdict(list)#wp
+        #ndarray objects can't be serialised to json object..so convert np.array(rp) to list(rp)
         res1['rp']=list(np.logspace(-1,np.log10(30),50)) 
         wpbins = len(res1['rp'])
+
     #get aum ready
     a = initializeHOD()
 
@@ -150,15 +149,17 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
             a.init_Ns_spl(getdblarr(logM), getdblarr(np.log10(hod1)), hod1.size)
             ## debug step
             print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
-            #print(f"esdbins:{esdbins}, projected radii={rp}")
             print(f"avmass_cen={a.avmass_cen(z)},avmass_tot={a.avmass_tot(z)}")
-            esdrp = getdblarr(rp)
-            esd = getdblarr(np.zeros(esdbins))
-            a.ESD(z,esdbins,esdrp,esd,esdbins+4)
-            wls = getnparr(esd,esdbins)
-            print(col,mag_order[jj],'wl_signal:',wls)
-            ##ndarray objects can't be serialised to json object..so convert wls to list(wls)
-            res[mag_order[jj]].append({col:list(wls)})
+            
+            if get_esd:
+                #print(f"esdbins:{esdbins}, projected radii={rp}")
+                esdrp = getdblarr(rp)
+                esd = getdblarr(np.zeros(esdbins))
+                a.ESD(z,esdbins,esdrp,esd,esdbins+4)
+                wls = getnparr(esd,esdbins)
+                print(col,mag_order[jj],'wl_signal:',wls)
+                ##ndarray objects can't be serialised to json object..so convert wls to list(wls)
+                res[mag_order[jj]].append({col:list(wls)})
 
             if get_wp:
                 wp_rp = getdblarr(np.array(res1['rp']))
@@ -166,19 +167,19 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
                 a.Wp(z, wpbins, wp_rp, wp, 100.0)
                 cls_sig = getnparr(wp,wpbins)
                 res1[mag_order[jj]].append({col:list(cls_sig)})
-    
-    call("mkdir -p ./bin{rbin}",shell=True) 
-    with open(f"./bin{rbin}/esd_{method}_magbinned_colrdep.json", "w") as f:
-         json.dump(res, f)
+    if get_esd: 
+        call("mkdir -p ./bin{rbin}",shell=True) 
+        with open(f"./bin{rbin}/esd_{method}_magbinned_colrdep.json", "w") as f:
+             json.dump(res, f)
     if get_wp:
         call(f"mkdir -p ./wp",shell=True)
         with open(f"./wp/Wp_{method}_magbinned_colrdep.json", "w") as f:
              json.dump(res1, f)
 
 if __name__=="__main__":
-    rbin = 10
-    esd_json(rbin, get_wp=False, get_esd=True, method="bestfit")     
-    esd_json(rbin, get_wp=False, get_esd=True, method="fittingFunc")     
+    rbin = 10 #used only to store esd, same as rbin in config file of weaklens_pipeline
+    esd_json(rbin, get_wp=True, get_esd=False, method="bestfit")     
+    esd_json(rbin, get_wp=True, get_esd=False, method="fittingFunc")     
 
 
 

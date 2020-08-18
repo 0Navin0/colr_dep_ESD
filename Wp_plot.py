@@ -5,7 +5,7 @@ from subprocess import call
 
 def plot_wp(method, f_type):
     #theoretical calcuated values from AUM
-    with open(f'./Wp_{method}_magbinned_colrdep.json','r') as f: 
+    with open(f'./wp/Wp_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])

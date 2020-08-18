@@ -8,6 +8,7 @@ import json
 from subprocess import call
 
 def ratioplot_esd(rbin, method, single):
+    #caluculated esd from aum.
     with open(f'./bin{rbin}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
@@ -98,17 +99,23 @@ def ratioplot_esd(rbin, method, single):
             plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
 
 if __name__=="__main__":
-    rbin = 10 #same rbin supplied in config file of weaklens_pipeline
+    rbin = 5 #same rbin supplied in config file of weaklens_pipeline
+
+    #assuming bin{bin} is already there and contains the .json plottable file. 
+    #call(f"mkdir -p /home/navin/git/colr_dep_ESD/bin{rbin}",shell=True)
+
     method = ['bestfit','fittingFunc']
     for ii in method:
         for jj,tt in zip((True,False),("single","overplot")):
-            ratioplot_esd(method=ii,single=jj) 
+            ratioplot_esd(rbin, method=ii,single=jj) 
             cmd=f"mkdir -p ./{tt}.{ii}.ratio"
             call(cmd,shell=True)
             call(f"mv *png ./{tt}.{ii}.ratio",shell=True)
             call(f"tar -cvzf ./{tt}.{ii}.ratio.tar.gz ./{tt}.{ii}.ratio",shell=True)
-    call("mkdir -p esd_ratio_plots",shell=True)
-    call("mv *ratio *ratio.tar.gz ./esd_ratio_plots",shell=True)
+    call(f"mkdir -p ./esd_ratio_plots",shell=True)
+    call(f"mv -f ./*ratio ./*ratio.tar.gz ./esd_ratio_plots",shell=True)
+    call(f"mv -f ./esd_ratio_plots ./bin{rbin}",shell=True)
+
 """
 understand units of deltasigma theoretically as well as the way it gets caclulated in ESd and weaklens pipeline(observational).
 
