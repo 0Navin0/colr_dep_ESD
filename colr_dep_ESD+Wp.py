@@ -84,7 +84,7 @@ def initializeHOD():
     return h.hod(p, q) 
 
 
-def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
+def esd_json(rbin, pofz, get_wp=False, get_esd=True, method='bestfit'):
     
     #set up sampled hod locations
     galtype=['cen','sat']
@@ -168,8 +168,8 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
                 cls_sig = getnparr(wp,wpbins)
                 res1[mag_order[jj]].append({col:list(cls_sig)})
     if get_esd: 
-        call("mkdir -p ./bin{rbin}",shell=True) 
-        with open(f"./bin{rbin}/esd_{method}_magbinned_colrdep.json", "w") as f:
+        call("mkdir -p ./bin{rbin}/{pofz}",shell=True) 
+        with open(f"./bin{rbin}/{pofz}/esd_{method}_magbinned_colrdep.json", "w") as f:
              json.dump(res, f)
     if get_wp:
         call(f"mkdir -p ./wp",shell=True)
@@ -178,8 +178,9 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
 
 if __name__=="__main__":
     rbin = 10 #used only to store esd, same as rbin in config file of weaklens_pipeline
-    esd_json(rbin, get_wp=True, get_esd=False, method="bestfit")     
-    esd_json(rbin, get_wp=True, get_esd=False, method="fittingFunc")     
+    pofz = "noFullpofz" #Fullpofz (give one of two types.)
+    esd_json(rbin, pofz, get_wp=True, get_esd=False, method="bestfit")     
+    esd_json(rbin, pofz, get_wp=True, get_esd=False, method="fittingFunc")     
 
 
 

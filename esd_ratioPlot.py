@@ -7,16 +7,16 @@ from astropy.io import fits
 import json
 from subprocess import call
 
-def ratioplot_esd(rbin, method, single):
+def ratioplot_esd(rbin, pofz, method, single):
     #caluculated esd from aum.
-    with open(f'./bin{rbin}/esd_{method}_magbinned_colrdep.json','r') as f: 
+    with open(f'./bin{rbin}/{pofz}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
     rp = dic['rp']
  
     #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe' #firt run --> rbin=15
-    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/no_Fullpofz/signal_dr72safe_bin{rbin}/signal_dr72safe' #-->updated location of files
+    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/signal_dr72safe_bin{rbin}/signal_dr72safe' #-->updated location of files
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
     colour = ['red','blue']
@@ -101,20 +101,16 @@ def ratioplot_esd(rbin, method, single):
 if __name__=="__main__":
     rbin = 5 #same rbin supplied in config file of weaklens_pipeline
 
-    #assuming bin{bin} is already there and contains the .json plottable file. 
-    #call(f"mkdir -p /home/navin/git/colr_dep_ESD/bin{rbin}",shell=True)
-
     method = ['bestfit','fittingFunc']
     for ii in method:
         for jj,tt in zip((True,False),("single","overplot")):
             ratioplot_esd(rbin, method=ii,single=jj) 
-            cmd=f"mkdir -p ./{tt}.{ii}.ratio"
+            cmd=f"mkdir -p ./bin{rbin}/{pofz}/{tt}.{ii}.ratio"
             call(cmd,shell=True)
-            call(f"mv *png ./{tt}.{ii}.ratio",shell=True)
-            call(f"tar -cvzf ./{tt}.{ii}.ratio.tar.gz ./{tt}.{ii}.ratio",shell=True)
-    call(f"mkdir -p ./esd_ratio_plots",shell=True)
-    call(f"mv -f ./*ratio ./*ratio.tar.gz ./esd_ratio_plots",shell=True)
-    call(f"mv -f ./esd_ratio_plots ./bin{rbin}",shell=True)
+            call(f"mv *png ./bin{rbin}/{pofz}/{tt}.{ii}.ratio",shell=True)
+            call(f"tar -cvzf ./bin{rbin}/{pofz}/{tt}.{ii}.ratio.tar.gz ./bin{rbin}/{pofz}/{tt}.{ii}.ratio",shell=True)
+    call(f"mkdir -p ./bin{rbin}/{pofz}/esd_ratio_plots",shell=True)
+    call(f"mv -f ./bin{rbin}/{pofz}/*ratio ./bin{rbin}/{pofz}/*ratio.tar.gz ./bin{rbin}/{pofz}/esd_ratio_plots",shell=True)
 
 """
 understand units of deltasigma theoretically as well as the way it gets caclulated in ESd and weaklens pipeline(observational).
