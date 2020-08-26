@@ -112,12 +112,14 @@ def esd_json(run, pofz, get_wp=False, get_esd=True, method='bestfit'):
         #define proj-radii and esdbins for ESD caclucation from aum
         #the same radii used in observed esd by weaklens pipeline
         #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
-        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}/signal_dr72safe_bin*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
+        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe_bin*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
         base = glob(base)[0]
         rp = np.loadtxt('%s/signal_dr72safe7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
-        esdbins = rp.size  
         #store all the weak lensing signal data.
         res = defaultdict(list)#esd
+        #ndarray objects can't be serialised to json object..so convert wls to list(rp)
+        res['rp']=list(rp)
+        esdbins = rp.size  
     """
         #open config file
         with open('/'.join(base.split('/')[:-1]), "r") as yamlfile:
@@ -193,11 +195,12 @@ if __name__=="__main__":
     #In newer version, rbin is not needed. --26Aug2020
     #rbin = 10 #used only in address to store esd, same as rbin in config file of weaklens_pipeline
     
-    pofz = "noFullpofz" #fullpofz (give one of two types.)
+    pofz = "fullpofz"# "noFullpofz" #"fullpofz"# (give one of two types.)
     #17Aug2020
     #esd_json(rbin, pofz, get_wp=True, get_esd=False, method="bestfit")     
     #esd_json(rbin, pofz, get_wp=True, get_esd=False, method="fittingFunc")     
-    for run in [1,2,3,4,5]:
+    #for run in [1,2,3,4,5]: #for noFullpofz
+    for run in [0,1,2,3,4,5]: #for fullpofz
         #26Aug2020
         esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
         esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     

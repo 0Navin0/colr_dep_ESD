@@ -1,0 +1,3 @@
+1)get the theoretical signal by running colr_dep_ESD+Wp.py
+2)plot observed + theo signals using esd_plots_obs+theo.py
+3)if you want ratio plots, run esd_ratioPlot.py

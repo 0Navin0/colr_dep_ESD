@@ -8,25 +8,31 @@ import json
 from subprocess import call
 
 def ratioplot_esd(rbin, pofz, method, single):
-    #caluculated esd from aum.
-    with open(f'./bin{rbin}/{pofz}/esd_{method}_magbinned_colrdep.json','r') as f: 
+    #open caluculated esd from aum.
+    #fixed dir tree. try not to alter it.---26Aug2020
+    base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+    with open(f'{base0}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
     rp = dic['rp']
+
+    #fixed dir tree. try not to alter it.---26Aug2020
+    #open config file
+    with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/*config*")[0], "r") as yamlfile:
+        config = yaml.load(yamlfile)
  
     #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe' #firt run --> rbin=15
-    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/signal_dr72safe_bin{rbin}/signal_dr72safe' #-->updated location of files
+    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal*")[0]+'/signal_dr72safe'
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
     colour = ['red','blue']
     for tag in identifier:
+
         if single==False:
             #for both colr on the same plot 
             fig,axes = plt.subplots(1,1)
-
         for colr in colour:
-
             # get info of samples to be plotted from the red/blue filtered fits files
             hdul = fits.open('%s%d.%s.fits'%(sample_base,tag,colr))
             hdr = hdul[0].header
@@ -73,16 +79,18 @@ def ratioplot_esd(rbin, pofz, method, single):
                 axes.set_xscale('log')
                 #axes.set_yscale('log')    
                 axes.legend(loc='best', frameon=True)
+                plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
                 # setting common x and y axes lables.
                 fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
                 #fig.text(0.04, 0.5, r'$\frac{Predicted(\Delta\Sigma)}{Observed(\Delta\Sigma)}$', va='center', rotation='vertical')#, fontsize=16) #units_deltasigma=[hM$_\odot$/pc$^2]
               
                 # for common title to all the subplots
-                plt.savefig(f"{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+                plt.savefig((base0 + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             
             if single==False:
                 axes.plot(rp_, ratio,c=colr) #marker='d', markerfacecolor='white'
         if single==False:
+            plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
             axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
             axes.errorbar([],[],markerfacecolor='None',ls='',label=r"$\frac{Observed(NYU-VAGC\ cat.+Pipeline)}{Prediction(Niladri\ et\ al.+AUM)}$")
             axes.set_xscale('log')
@@ -96,21 +104,26 @@ def ratioplot_esd(rbin, pofz, method, single):
             #plt.suptitle(r'samples used for weaklensing single calculation (NYU_VAGC,Zehavi,Niladri)')
             #plt.suptitle('weak lensing signal around NYU-VAGC galaxy sample dr72safe%d in HSC field of sources.\n\n%s, %s'%(tag,leg1,leg2))#, fontsize=15)
 
-            plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+            plt.savefig(base0 + f"/{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
 
 if __name__=="__main__":
-    rbin = 5 #same rbin supplied in config file of weaklens_pipeline
+    #rbin = 5 #same rbin supplied in config file of weaklens_pipeline---used in old version
 
     method = ['bestfit','fittingFunc']
-    for ii in method:
-        for jj,tt in zip((True,False),("single","overplot")):
-            ratioplot_esd(rbin, method=ii,single=jj) 
-            cmd=f"mkdir -p ./bin{rbin}/{pofz}/{tt}.{ii}.ratio"
-            call(cmd,shell=True)
-            call(f"mv *png ./bin{rbin}/{pofz}/{tt}.{ii}.ratio",shell=True)
-            call(f"tar -cvzf ./bin{rbin}/{pofz}/{tt}.{ii}.ratio.tar.gz ./bin{rbin}/{pofz}/{tt}.{ii}.ratio",shell=True)
-    call(f"mkdir -p ./bin{rbin}/{pofz}/esd_ratio_plots",shell=True)
-    call(f"mv -f ./bin{rbin}/{pofz}/*ratio ./bin{rbin}/{pofz}/*ratio.tar.gz ./bin{rbin}/{pofz}/esd_ratio_plots",shell=True)
+    pofz = "fullpofz" #"noFullpofz" #fullpofz (give one of two types.)
+    #for run in [1,2,3,4,5]: #for noFullpofz
+    for run in [0,1,2,3,4,5]: #for fullpofz
+        base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+        for ii in method:
+
+            for jj,tt in zip((True,False),("single","overplot")):
+                ratioplot_esd(run, pofz, method=ii,single=jj) 
+                cmd="mkdir -p " + base0 + f"/{tt}.{ii}.ratio"
+                call(cmd,shell=True)
+                call(f"mv {base0}/*png {base0}/{tt}.{ii}.ratio",shell=True`) 
+                call(f"tar -czvf {base0}/{tt}.{ii}.ratio.tar.gz {base0}/{tt}.{ii}.ratio",shell=True) 
+        call(f"mkdir -p {base0}/esd_ratio_plots",shell=True)
+        call(f"mv -f {base0}/ratio* {base0}/ratio.tar.gz* {base0}/esd_ratio_plots",shell=True)
 
 """
 understand units of deltasigma theoretically as well as the way it gets caclulated in ESd and weaklens pipeline(observational).

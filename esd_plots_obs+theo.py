@@ -14,8 +14,8 @@ import yaml
 
 def plot_esd(run, pofz, method, single):
     #fixed dir tree. try not to alter it.---26Aug2020
-    base0 = glob("/home/navin/git/colr_dep_ESD/{pofz}/run{run}/signal_dr72safe_bin*")[0]
-    with open(f'{base}/esd_{method}_magbinned_colrdep.json','r') as f: 
+    base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+    with open(f'{base0}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
@@ -23,11 +23,11 @@ def plot_esd(run, pofz, method, single):
    
     #fixed dir tree. try not to alter it.---26Aug2020
     #open config file
-    with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}/*config")[0], "r") as yamlfile:
+    with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/*config*")[0], "r") as yamlfile:
         config = yaml.load(yamlfile)
     
     #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
-    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}/signal*")[0]+'/signal_dr72safe'
+    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal*")[0]+'/signal_dr72safe'
     #Specific to downloaded nyu_data..No need to change.
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
@@ -39,7 +39,6 @@ def plot_esd(run, pofz, method, single):
         if single==False:
             #for both colr on the same plot 
             fig,axes = plt.subplots(1,1)
-
         for colr in colour:
             # get data from weaklensing pipeline output to plot
             deltasigma,r,errDeltaSigma = np.loadtxt('%s%d_%s.dat'%(base,tag,colr),usecols=(5,7,12),unpack=True)
@@ -73,6 +72,7 @@ def plot_esd(run, pofz, method, single):
                 axes.set_xscale('log')
                 axes.set_yscale('log')    
                 axes.legend(loc='best', frameon=True)
+                plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
                 #plt.title(f"{method} params used to get HODs.(Niladri et al.)")
                 # setting common x and y axes lables.
                 fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
@@ -88,6 +88,7 @@ def plot_esd(run, pofz, method, single):
                     axes.plot(rp, esd, c=colr) #, marker='d',markerfacecolor='white'
                     axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', fmt='o', linewidth=1.5, capsize=5, capthick=2)
         if single==False:
+            plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
             axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
             axes.set_ylim(0.01,3000)
             axes.set_xscale('log')
@@ -108,19 +109,20 @@ if __name__=="__main__":
     #rbin = 10 #5 #15  #change it as per the config file for weaklens_pipeline---older version.
 
     # run and pofz decide the location of files to be plotted and stored---26Aug2020
-    run = 1
-    pofz = "noFullpofz" #Fullpofz (give one of two types.)
-    base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}/signal_dr72safe_bin*")[0]
-
-    for ii in method:
-        for jj,tt in zip((True,False),("single","overplot")):
-            plot_esd(run, pofz, method=ii, single=jj) 
-            cmd = "mkdir -p " + base0 + f"/{tt}.{ii}"
-            call(cmd,shell=True)
-            call(f"mv {base0}/*png {base0}/{tt}.{ii}",shell=True)
-            call(f"tar -czvf {base0}/{tt}.{ii}.tar.gz {base0}/{tt}.{ii}",shell=True)
-    call(f"mkdir -p {base}/esd_plots",shell=True)
-    call(f"mv -f {base0}/single* {base0}/overplot* {base0}/esd_plots",shell=True)
+    #run = 2
+    pofz = "fullpofz" #"noFullpofz" #fullpofz (give one of two types.)
+    #for run in [1,2,3,4,5]: #for noFullpofz
+    for run in [0,1,2,3,4,5]: #for fullpofz
+        base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+        for ii in method:
+            for jj,tt in zip((True,False),("single","overplot")):
+                plot_esd(run, pofz, method=ii, single=jj) 
+                cmd = "mkdir -p " + base0 + f"/{tt}.{ii}"
+                call(cmd,shell=True)
+                call(f"mv {base0}/*png {base0}/{tt}.{ii}",shell=True)
+                call(f"tar -czvf {base0}/{tt}.{ii}.tar.gz {base0}/{tt}.{ii}",shell=True)
+        call(f"mkdir -p {base0}/esd_plots",shell=True)
+        call(f"mv -f {base0}/single* {base0}/overplot* {base0}/esd_plots",shell=True)
 
 
 
