@@ -1,6 +1,6 @@
 # an extension of code in "Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/plotSignal1.py"  
 
-# variables to play with: base, rbin 
+# variables to play with: base, rbin/ run, pofz 
 
 import matplotlib.pyplot as plt 
 from glob import glob
