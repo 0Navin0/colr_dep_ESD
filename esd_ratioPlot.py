@@ -6,6 +6,7 @@ import numpy as np
 from astropy.io import fits
 import json
 from subprocess import call
+import yaml
 
 def ratioplot_esd(rbin, pofz, method, single):
     #open caluculated esd from aum.
@@ -85,7 +86,7 @@ def ratioplot_esd(rbin, pofz, method, single):
                 #fig.text(0.04, 0.5, r'$\frac{Predicted(\Delta\Sigma)}{Observed(\Delta\Sigma)}$', va='center', rotation='vertical')#, fontsize=16) #units_deltasigma=[hM$_\odot$/pc$^2]
               
                 # for common title to all the subplots
-                plt.savefig((base0 + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+                plt.savefig(base0 + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             
             if single==False:
                 axes.plot(rp_, ratio,c=colr) #marker='d', markerfacecolor='white'
@@ -110,9 +111,9 @@ if __name__=="__main__":
     #rbin = 5 #same rbin supplied in config file of weaklens_pipeline---used in old version
 
     method = ['bestfit','fittingFunc']
-    pofz = "fullpofz" #"noFullpofz" #fullpofz (give one of two types.)
-    #for run in [1,2,3,4,5]: #for noFullpofz
-    for run in [0,1,2,3,4,5]: #for fullpofz
+    pofz ="noFullpofz" # "fullpofz" #"noFullpofz" #fullpofz (give one of two types.)
+    for run in [1,2,3,4,5]: #for noFullpofz
+    #for run in [0,1,2,3,4,5]: #for fullpofz
         base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
         for ii in method:
 
@@ -120,10 +121,10 @@ if __name__=="__main__":
                 ratioplot_esd(run, pofz, method=ii,single=jj) 
                 cmd="mkdir -p " + base0 + f"/{tt}.{ii}.ratio"
                 call(cmd,shell=True)
-                call(f"mv {base0}/*png {base0}/{tt}.{ii}.ratio",shell=True`) 
+                call(f"mv {base0}/*png {base0}/{tt}.{ii}.ratio",shell=True) 
                 call(f"tar -czvf {base0}/{tt}.{ii}.ratio.tar.gz {base0}/{tt}.{ii}.ratio",shell=True) 
         call(f"mkdir -p {base0}/esd_ratio_plots",shell=True)
-        call(f"mv -f {base0}/ratio* {base0}/ratio.tar.gz* {base0}/esd_ratio_plots",shell=True)
+        call(f"mv -f {base0}/*ratio {base0}/*ratio.tar.gz {base0}/esd_ratio_plots",shell=True)
 
 """
 understand units of deltasigma theoretically as well as the way it gets caclulated in ESd and weaklens pipeline(observational).
