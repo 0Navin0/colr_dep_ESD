@@ -1,6 +1,8 @@
 # an extension of code in "Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/plotSignal1.py"  
 
 # variables to play with: base, rbin/ run, pofz 
+# the location of config file and json file for esd signal is fixed now...only need to give it 'run' and 'pofz' to access the right file.
+# name of config file should always end with "config"
 
 import matplotlib.pyplot as plt 
 from glob import glob
@@ -8,16 +10,24 @@ import numpy as np
 from astropy.io import fits
 import json
 from subprocess import call
+import yaml
 
-def plot_esd(rbin, pofz, method, single):
-    with open(f'./bin{rbin}/{pfoz}/esd_{method}_magbinned_colrdep.json','r') as f: 
+def plot_esd(run, pofz, method, single):
+    #fixed dir tree. try not to alter it.---26Aug2020
+    base0 = glob("/home/navin/git/colr_dep_ESD/{pofz}/run{run}/signal_dr72safe_bin*")[0]
+    with open(f'{base}/esd_{method}_magbinned_colrdep.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
     rp = dic['rp']
+   
+    #fixed dir tree. try not to alter it.---26Aug2020
+    #open config file
+    with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}/*config")[0], "r") as yamlfile:
+        config = yaml.load(yamlfile)
     
     #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
-    base = f'/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/signal_dr72safe_bin{rbin}/signal_dr72safe'
+    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}/signal*")[0]+'/signal_dr72safe'
     #Specific to downloaded nyu_data..No need to change.
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
@@ -68,7 +78,7 @@ def plot_esd(rbin, pofz, method, single):
                 fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
                 fig.text(0.04, 0.5, '$\Delta\Sigma$ [hM$_\odot$/pc$^2]$', va='center', rotation='vertical')#, fontsize=16)
                 # for common title to all the subplots
-                plt.savefig(f"{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+                plt.savefig(base0 + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             else:
                 # plotting red and blue on the same plot 
                 if colr=='blue':
@@ -91,22 +101,26 @@ def plot_esd(rbin, pofz, method, single):
             #plt.suptitle(r'samples used for weaklensing signal calculation (NYU_VAGC,Zehavi,Niladri)')
             #plt.suptitle('weak lensing signal around NYU-VAGC galaxy sample dr72safe%d in HSC field of sources.\n\n%s, %s'%(tag,leg1,leg2))#, fontsize=15)
             #plt.show()
-            plt.savefig(f"{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
+            plt.savefig(base0 + f"/{method}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
    
 if __name__=="__main__":
     method = ['bestfit','fittingFunc']
-    rbin = 10 #5 #15  #change it as per the config file for weaklens_pipeline
+    #rbin = 10 #5 #15  #change it as per the config file for weaklens_pipeline---older version.
+
+    # run and pofz decide the location of files to be plotted and stored---26Aug2020
+    run = 1
     pofz = "noFullpofz" #Fullpofz (give one of two types.)
+    base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}/signal_dr72safe_bin*")[0]
 
     for ii in method:
         for jj,tt in zip((True,False),("single","overplot")):
-            plot_esd(rbin, method=ii, single=jj) 
-            cmd=f"mkdir -p ./bin{rbin}/{pofz}/{tt}.{ii}"
+            plot_esd(run, pofz, method=ii, single=jj) 
+            cmd = "mkdir -p " + base0 + f"/{tt}.{ii}"
             call(cmd,shell=True)
-            call(f"mv *png ./bin{rbin}/{pofz}/{tt}.{ii}",shell=True)
-            call(f"tar -czvf ./bin{rbin}/{pofz}/{tt}.{ii}.tar.gz ./bin{rbin}/{pofz}/{tt}.{ii}",shell=True)
-    call(f"mkdir -p ./bin{rbin}/{pofz}/esd_plots",shell=True)
-    call(f"mv -f ./bin{rbin}/{pofz}/single* ./bin{rbin}/{pofz}/overplot* ./bin{rbin}/{pofz}/esd_plots",shell=True)
+            call(f"mv {base0}/*png {base0}/{tt}.{ii}",shell=True)
+            call(f"tar -czvf {base0}/{tt}.{ii}.tar.gz {base0}/{tt}.{ii}",shell=True)
+    call(f"mkdir -p {base}/esd_plots",shell=True)
+    call(f"mv -f {base0}/single* {base0}/overplot* {base0}/esd_plots",shell=True)
 
 
 
