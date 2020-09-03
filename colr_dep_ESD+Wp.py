@@ -86,7 +86,7 @@ def initializeHOD():
     return h.hod(p, q) 
 
 
-def esd_json(run, pofz, get_wp=False, get_esd=True, method='bestfit'):
+def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
     
     #set up sampled hod locations
     galtype=['cen','sat']
@@ -112,8 +112,11 @@ def esd_json(run, pofz, get_wp=False, get_esd=True, method='bestfit'):
         #define proj-radii and esdbins for ESD caclucation from aum
         #the same radii used in observed esd by weaklens pipeline
         #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
-        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe_bin*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
+        #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
+        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*fullpofz/rbin{rbin}/run*"  #03Sept2020
         base = glob(base)[0]
+        #debug step
+        print(f"\n\nUsing {base} for projected radii bins.\n\n")
         rp = np.loadtxt('%s/signal_dr72safe7_red.dat'%base,usecols=(7,),unpack=True) #same for all magbins and colr
         #store all the weak lensing signal data.
         res = defaultdict(list)#esd
@@ -143,12 +146,12 @@ def esd_json(run, pofz, get_wp=False, get_esd=True, method='bestfit'):
             #z = next((z_order1[ii][1] for ii in range(len(z_order1)) if mag_order[jj]==z_order1[ii][0])) #another way with z_order1
             z = df.z.values[df['z_order']==mag_order[jj]][0]
             print(ii,col,jj,colr_pair,mag_order[jj],z)
-    
+ 
             ## cen hod
             logM, hod0 = np.loadtxt(colr_pair[0],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
             ## sat hod
             _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
-            print(f"Total number of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
+            print(f"fraction of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
             print("Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. In some mag bins negatives come for low mass halos while for some for high mass halos.\nGo and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)")
             hod0[hod0<=0]=1e-20
             hod1[hod1<=0]=1e-20
@@ -179,12 +182,15 @@ def esd_json(run, pofz, get_wp=False, get_esd=True, method='bestfit'):
                 cls_sig = getnparr(wp,wpbins)
                 res1[mag_order[jj]].append({col:list(cls_sig)})
     if get_esd:
-        call("mkdir -p ./%s"% ('/'.join(base.split('/')[-3:])), shell=True)
+        call("mkdir -p ./Theoretical_ESD_signal", shell=True) #03Sept2020
+        #call("mkdir -p ./%s"% ('/'.join(base.split('/')[-3:])), shell=True) #26Aug2020
         #call("mkdir -p ./bin{rbin}/{pofz}",shell=True) #17Aug2020 #older version
         #with open(f"./bin{rbin}/{pofz}/esd_{method}_magbinned_colrdep.json", "w") as f:
-        with open(f"./%s/esd_{method}_magbinned_colrdep.json"%('/'.join(base.split('/')[-3:])), "w") as f:
+        #with open(f"./%s/esd_{method}_magbinned_colrdep.json"%('/'.join(base.split('/')[-3:])), "w") as f:
+        with open(f"./Theoretical_ESD_signal/esd_{method}_magbinned_colrdep_rbin%s.json"%rbin, "w") as f:
              json.dump(res, f)
-             print(f"esd file saved in: ./%s/esd_{method}_magbinned_colrdep.json\n\n\n"%('/'.join(base.split('/')[-3:])))
+             #print(f"esd file saved in: ./%s/esd_{method}_magbinned_colrdep.json\n\n\n"%('/'.join(base.split('/')[-3:])))
+             print(f"esd file saved in: ./Theoretical_ESD_signal/esd_{method}_magbinned_colrdep_rbin%s.json\n\n\n"%rbin)
     if get_wp:
         call(f"mkdir -p ./wp",shell=True)
         with open(f"./wp/Wp_{method}_magbinned_colrdep.json", "w") as f:
@@ -195,15 +201,22 @@ if __name__=="__main__":
     #In newer version, rbin is not needed. --26Aug2020
     #rbin = 10 #used only in address to store esd, same as rbin in config file of weaklens_pipeline
     
-    pofz = "fullpofz"# "noFullpofz" #"fullpofz"# (give one of two types.)
     #17Aug2020
     #esd_json(rbin, pofz, get_wp=True, get_esd=False, method="bestfit")     
-    #esd_json(rbin, pofz, get_wp=True, get_esd=False, method="fittingFunc")     
-    #for run in [1,2,3,4,5]: #for noFullpofz
-    for run in [0,1,2,3,4,5]: #for fullpofz
-        #26Aug2020
-        esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
-        esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     
+    #esd_json(rbin, pofz, get_wp=True, get_esd=False, method="fittingFunc")
+    
+    #26Aug2020 
+    #pofz = "fullpofz"# "noFullpofz" #"fullpofz"# (give one of two types.)
+    ##for run in [1,2,3,4,5]: #for noFullpofz
+    #for run in [0,1,2,3,4,5]: #for fullpofz
+    #    #26Aug2020
+    #    esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
+    #    esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     
+   
+    for rbin in [3,5,10]:  
+        #03Sept2020
+        esd_json(rbin, get_wp=False, get_esd=True, method="bestfit")     
+        esd_json(rbin, get_wp=False, get_esd=True, method="fittingFunc")     
 
 
 

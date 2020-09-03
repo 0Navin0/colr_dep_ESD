@@ -1,0 +1,5 @@
+the clustering signal of red and blue galaxies is different in the same magnitude bin.
+
+Since we can produce the clustering signals of these different color galaxies from HOD models, that mean these differences in signals due to red/blue color, give us a way to probe the HOD models in color dependent way in different luminosity bins.
+
+Q1 - Since for large r_p values the red and blue signals seem close enough in all the bins...and as we looks these singals at lower and lower r_p values, they seem to differ a lot....why? what does it indicate? I can answer this question if i understand what does w_p mean as a function of r_p?

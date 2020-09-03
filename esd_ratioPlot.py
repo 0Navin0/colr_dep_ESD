@@ -71,11 +71,13 @@ def ratioplot_esd(rbin, pofz, method, single):
             #debugging step
             print(f"predicted esd.size={esd.size}\tobserved deltasigma.size{deltasigma.size}\tr(weaklens output files) size={r.size}\trp(ESD_aum)={rp_.size}\n\n")
             ratio = deltasigma/esd #obervational/theoretical
-
+            errbar = errDeltaSigma/esd #add errorbar
+             
             if single==True:
                 # plotting one colr on one plot
                 fig,axes = plt.subplots(1,1)
-                axes.plot(rp_, ratio, label=r"$\frac{Observed(NYU-VAGC\ cat.+Pipeline)}{Prediction(Niladri\ et\ al.+AUM)}$",c=colr) #marker='d', markerfacecolor='white',
+                #axes.plot(rp_, ratio, label=r"$\frac{Observed(NYU-VAGC\ cat.+Pipeline)}{Prediction(Niladri\ et\ al.+AUM)}$",c=colr) #marker='d', markerfacecolor='white',
+                axes.errorbar(rp_, ratio, yerr=errbar, label=r"$\frac{Observed(NYU-VAGC\ cat.+Pipeline)}{Prediction(Niladri\ et\ al.+AUM)}$",c=colr) #marker='d', markerfacecolor='white',
                 axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
                 axes.set_xscale('log')
                 #axes.set_yscale('log')    
@@ -89,7 +91,8 @@ def ratioplot_esd(rbin, pofz, method, single):
                 plt.savefig(base0 + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
             
             if single==False:
-                axes.plot(rp_, ratio,c=colr) #marker='d', markerfacecolor='white'
+                #axes.plot(rp_, ratio,c=colr) #marker='d', markerfacecolor='white'
+                axes.errorbar(rp_, ratio, yerr=errbar, c=colr) #marker='d', markerfacecolor='white'
         if single==False:
             plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
             axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")

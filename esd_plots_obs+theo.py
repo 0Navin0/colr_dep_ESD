@@ -1,8 +1,8 @@
 # an extension of code in "Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/plotSignal1.py"  
 
 # variables to play with: base, rbin/ run, pofz 
-# the location of config file and json file for esd signal is fixed now...only need to give it 'run' and 'pofz' to access the right file.
-# name of config file should always end with "config"
+# the location of json file for esd signal is fixed now...only need to give it 'run' and 'pofz' to access the right file.
+# name of config file should always end with "config" ------> NOT USING ANYMORE insdead...I access the ifrandom and pofz from the directory structure itself..which is anyways coming from the actual config file
 
 import matplotlib.pyplot as plt 
 from glob import glob
@@ -12,10 +12,12 @@ import json
 from subprocess import call
 import yaml
 
-def plot_esd(run, pofz, method, single):
-    #fixed dir tree. try not to alter it.---26Aug2020
-    base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
-    with open(f'{base0}/esd_{method}_magbinned_colrdep.json','r') as f: 
+def plot_esd(pofz,rbin, method, single):
+    #fixed dir tree. try not to alter it.---26Aug2020, 03Sept2020
+    #base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+    #base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run*{run}*{pofz}")[0] #03Sept2020
+    base0 = glob(f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal")[0] #03Sept2020
+    with open(f'{base0}/esd_{method}_magbinned_colrdep_rbin{rbin}.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
@@ -23,11 +25,16 @@ def plot_esd(run, pofz, method, single):
    
     #fixed dir tree. try not to alter it.---26Aug2020
     #open config file
-    with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/*config*")[0], "r") as yamlfile:
-        config = yaml.load(yamlfile)
+    #no need to store config file for every run. I'll try to extract the required info from the tree structure itself..like below
+    #with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/*config*")[0], "r") as yamlfile:
+    #    config = yaml.load(yamlfile)
+    #outputdir = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*")[0] #03Sept2020
+    outputdir = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/rbin{rbin}/run{run}*")[0] #03Sept2020
+    ifrandom, pofz = outputdir.split('_')[-3], outputdir.split('_')[-1] 
     
     #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
-    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal*")[0]+'/signal_dr72safe'
+    #base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal*")[0]+'/signal_dr72safe' #26Aug2020
+    base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*")[0]+'/signal_dr72safe' #03Sept2020
     #Specific to downloaded nyu_data..No need to change.
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
@@ -41,6 +48,7 @@ def plot_esd(run, pofz, method, single):
             fig,axes = plt.subplots(1,1)
         for colr in colour:
             # get data from weaklensing pipeline output to plot
+            if ifrandom == 'random':
             deltasigma,r,errDeltaSigma = np.loadtxt('%s%d_%s.dat'%(base,tag,colr),usecols=(5,7,12),unpack=True)
             notnan = ~np.isnan(deltasigma) & ~np.isnan(r) & ~np.isnan(errDeltaSigma)
             deltasigma=deltasigma[notnan]
@@ -72,7 +80,7 @@ def plot_esd(run, pofz, method, single):
                 axes.set_xscale('log')
                 axes.set_yscale('log')    
                 axes.legend(loc='best', frameon=True)
-                plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
+                plt.title(f"{ifrandom} rotation and {pofz} for the HSC sources")
                 #plt.title(f"{method} params used to get HODs.(Niladri et al.)")
                 # setting common x and y axes lables.
                 fig.text(0.5, 0.02, r"$R [h^{-1} Mpc$]", ha='center')#, fontsize=16)
@@ -88,7 +96,7 @@ def plot_esd(run, pofz, method, single):
                     axes.plot(rp, esd, c=colr) #, marker='d',markerfacecolor='white'
                     axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', fmt='o', linewidth=1.5, capsize=5, capthick=2)
         if single==False:
-            plt.title(f"{config['random']} rotation and {config['pofz']} for the HSC sources")
+            plt.title(f"{ifrandom} rotation and {pofz} for the HSC sources")
             axes.errorbar([],[],markerfacecolor='None',ls='',label=f"{leg1}\n{leg2}")
             axes.set_ylim(0.01,3000)
             axes.set_xscale('log')
@@ -110,10 +118,11 @@ if __name__=="__main__":
 
     # run and pofz decide the location of files to be plotted and stored---26Aug2020
     #run = 2
-    pofz = "fullpofz" #"noFullpofz" #fullpofz (give one of two types.)
-    #for run in [1,2,3,4,5]: #for noFullpofz
+    pofz = "nofullpofz" #"nofullpofz" #fullpofz (give one of two types.)
+    #for run in [0,1,2,3,4,5]: #for nofullpofz
     for run in [0,1,2,3,4,5]: #for fullpofz
-        base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+        #base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
+        base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*")[0]
         for ii in method:
             for jj,tt in zip((True,False),("single","overplot")):
                 plot_esd(run, pofz, method=ii, single=jj) 
