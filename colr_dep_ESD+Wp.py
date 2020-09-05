@@ -113,7 +113,8 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
         #the same radii used in observed esd by weaklens pipeline
         #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
         #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
-        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*fullpofz/rbin{rbin}/run*"  #03Sept2020
+        #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*fullpofz/rbin{rbin}/run*"  #03Sept2020
+        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*rbin{rbin}*" 
         base = glob(base)[0]
         #debug step
         print(f"\n\nUsing {base} for projected radii bins.\n\n")
