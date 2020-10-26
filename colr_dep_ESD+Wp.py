@@ -99,7 +99,7 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
     temp1 = [glob(sat_hod_loc+f"/*{x}*") for x in colr]
     [x.sort() for x in temp0]
     [x.sort() for x in temp1]
-    #get the number of magbins and magbins to match the correct redshift to each sample.
+    #get the number of magbins and magbins to match the correct redshift to each colr-galtype sample.
     mag_order=[temp0[0][jj].split('_')[-1].split('.csv')[0] for jj in range(len(temp0[0]))]
     
     #get mean redshift for the samples(pr.magbin.dat) in the order same as mag_order
@@ -112,7 +112,7 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
         #define proj-radii and esdbins for ESD caclucation from aum
         #the same radii used in observed esd by weaklens pipeline
         #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
-        #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" diri.
+        #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" dir.
         #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*fullpofz/rbin{rbin}/run*"  #03Sept2020
         base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*rbin{rbin}*" 
         base = glob(base)[0]
@@ -146,6 +146,7 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
             ## get redshift of the galaxy sample(NYU catalog safe7 sample) in magbin-mag_order
             #z = next((z_order1[ii][1] for ii in range(len(z_order1)) if mag_order[jj]==z_order1[ii][0])) #another way with z_order1
             z = df.z.values[df['z_order']==mag_order[jj]][0]
+            print("\n*-----------*")
             print(ii,col,jj,colr_pair,mag_order[jj],z)
  
             ## cen hod
@@ -153,7 +154,8 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
             ## sat hod
             _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
             print(f"fraction of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
-            print("Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. In some mag bins negatives come for low mass halos while for some for high mass halos.\nGo and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)")
+            print(f"Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. In some mag bins negatives come for low mass halos while for some for high mass halos.\nGo and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)")
+            print("*-----------*")
             hod0[hod0<=0]=1e-20
             hod1[hod1<=0]=1e-20
             print(f"cen:{hod0.size}, sat:{hod1.size}")
