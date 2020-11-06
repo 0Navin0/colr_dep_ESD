@@ -1,10 +1,10 @@
-# Use hod.ESD() from hod.py to get the lesing signal.
+# Use hod.wp_ESD() from hod.py to get the lesing signal.(projected Excess Surface Density)
 #
 #For documentation on 'aum' and inside modules, either visit http://surhudm.github.io/aum/code.html or try doing dir(),help(), and ? and ?? in front of every python object defined inside these modules.
 
 ## pre-requisites to use this function:
    # there are defined functions in this module, to get c-array from a numpy array  and vice-versa. These conversions of objects types are needed inside ESD().
-   # __init__ initializes hod and cosmology object. we'll have to use it to initialize the hod and cosmology class.
+   # we need to initialize the cosmology and hod class.
    # You might want to use __swig_destroy__() when you are doing some calculation which includes more than one cosmology.
    # Some functions which might be of interest:
       # getOmb, getOmk, geth,gets8, hod_free, hod_renew, ncen, ncenz, nsat, nsatz, set_cen_offset_paramsm, set_cfactor, set_inc_params, sethalo_exc
@@ -15,8 +15,8 @@
 # import red/blue HODs which match Niladri's best fit results of Global Analysis in numpy arrays. (/home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat))
 # convert binned logM and Nsat/Ncen (red/blue) numpy arrays into c-arrays.
 # supply these arrays appropriately to set the gsl_interpolation in hod.cpp
-# set up other input parameters to call ESD func from hod.py
-# save and plot the ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
+# set up other input parameters to call wp_ESD func from hod.py
+# save and plot the wp_ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
 # similaryly calculate Wp_rp (clustering signal) in each bin for each color(red/blue).
 
 """Manual supply:""" 
@@ -86,7 +86,7 @@ def initializeHOD():
     return h.hod(p, q) 
 
 
-def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
+def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit', save_interp_hod=True):
     
     #set up sampled hod locations
     galtype=['cen','sat']
@@ -154,18 +154,35 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit'):
             ## sat hod
             _ , hod1 = np.loadtxt(colr_pair[1],dtype={'names':("logM","hod",), 'formats': ('float','float',)},comments="#", unpack=True)
             print(f"fraction of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
-            print(f"Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. In some mag bins negatives come for low mass halos while for some for high mass halos.\nGo and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)")
-            print("*-----------*")
-            hod0[hod0<=0]=1e-20
-            hod1[hod1<=0]=1e-20
-            print(f"cen:{hod0.size}, sat:{hod1.size}")
-            #print(f"cen:{hod0},sat:{hod1}")
+            print(f"""Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)""")
+
+            #idx = (hod0>0) & (hod1>0)
+            #logM = logM[idx]
+            #hod0 = hod0[idx]
+            #hod1 = hod1[idx]
+           
+            #removing the zeros and negatives -> cen and sat have different number of points for interpolation. 
+            idx0 = hod0>0
+            idx1 = hod1>0
+            hod0 = hod0[idx0]
+            hod1 = hod1[idx1]
+            print(f"cen:{hod0.size}, sat:{hod1.size}, logM:{logM[idx0].size}, {logM[idx1].size}")
+            #print(f"cen:{h0},sat:{h1}")  
  
             ## initialize spline, TINK==2
-            a.init_Nc_spl(getdblarr(logM), getdblarr(np.log10(hod0)), hod0.size)
-            a.init_Ns_spl(getdblarr(logM), getdblarr(np.log10(hod1)), hod1.size)
+            a.init_Nc_spl(getdblarr(logM[idx0]), getdblarr(np.log10(hod0)), hod0.size)
+            a.init_Ns_spl(getdblarr(logM[idx1]), getdblarr(np.log10(hod1)), hod1.size)
             ## debug step
+            print(f"logM\tcen: {min(logM[idx0])}-{max(logM[idx0])}\t sat: {min(logM[idx1])}-{max(logM[idx1])}")
+            #print("*-----------*")
             print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
+
+            if save_interp_hod:
+                print("\n.\n.\n.\nsaving the interpolated HODs for testing purposes with 500 interpolated points.\n")
+                np.savetxt(colr_pair[0].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.ncen,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[0].split('/')[-1]).split('_')[0:2])}", comments='#')   
+                np.savetxt(colr_pair[1].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.nsat,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[1].split('/')[-1]).split('_')[0:2])}", comments='#')   
             print(f"avmass_cen={a.avmass_cen(z)},avmass_tot={a.avmass_tot(z)}")
             
             if get_esd:
@@ -216,10 +233,11 @@ if __name__=="__main__":
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     
    
-    for rbin in [3,5,10]:  
+    for rbin,interp in zip([3,5,10],[False,False,False]):  
         #03Sept2020
-        esd_json(rbin, get_wp=False, get_esd=True, method="bestfit")     
-        esd_json(rbin, get_wp=False, get_esd=True, method="fittingFunc")     
+        #giving True to any one bin scheme will do since HOD interpolation uses the same data points for all bin sizes from hod_red_blue dir.  
+        esd_json(rbin, get_wp=True, get_esd=False, method="bestfit", save_interp_hod=interp)     
+        esd_json(rbin, get_wp=True, get_esd=False, method="fittingFunc", save_interp_hod=interp)     
 
 
 
@@ -233,7 +251,7 @@ if __name__=="__main__":
 """
 
 """
-	accessing red and blue EDDs from dictionary res/dic
+	accessing red and blue ESDs from dictionary res/dic
 	dic['-19.0--20.0'][0]['red'] ,dic['-20.0--21.0'][0]['red']
 	dic['-19.0--20.0'][1]['blue'],dic['-20.0--21.0'][1]['blue']
 """
