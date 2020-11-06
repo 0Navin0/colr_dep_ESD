@@ -1,0 +1,5 @@
+
+the wp plots are interpolation corrected, but still the plots look the same...
+Interpolation didn't affecet the plots much. so we need to vary the concentration related parameters in the cosmology to check if I can reproduce the original plots.
+
+point_at1.1_misplaced.png ---> one point could be misplaced by Niladri. Error bar at rp=1.1 isn't supposed to be as large as it looks in his plot.(-23--23 bin)
