@@ -18,5 +18,5 @@ wp.*.dat : measured of proj 2-pt correlation func. copied from https://arxiv.org
 
 Wp_plot.py --> plots projected correlation function (clustering signal) obtained using colr_dep_ESD+Wp.py
 
-wpd_project.tar ---> observed clustering signals (without error bars) from different mag bins as used in Paul et al. --> by usin WebPlotDigitizer
+wpd_project.tar (not used anywhere...only to check if the plot in -23--22_blue bin by niladri has a mistake at rp=1.1 )---> observed clustering signals (without error bars) from different mag bins as used in Paul et al. --> by usin WebPlotDigitizer
 

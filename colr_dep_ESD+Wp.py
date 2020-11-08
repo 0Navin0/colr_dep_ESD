@@ -74,7 +74,7 @@ def initializeHOD():
     p.s8 = 0.811
     p.nspec = 0.961
     p.ximax = np.log10(8.0)
-    p.cfac = 1.0
+    p.cfac = 5.0
     q.Mmin = 13.0 
     q.siglogM = 0.5 
     q.Msat = 14.0 
