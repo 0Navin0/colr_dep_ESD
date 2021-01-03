@@ -74,7 +74,7 @@ def initializeHOD():
     p.s8 = 0.811
     p.nspec = 0.961
     p.ximax = np.log10(8.0)
-    p.cfac = 5.0
+    p.cfac = 1.0
     q.Mmin = 13.0 
     q.siglogM = 0.5 
     q.Msat = 14.0 
@@ -91,7 +91,7 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit', save_interp_hod
     #set up sampled hod locations
     galtype=['cen','sat']
     colr=["red","blue"] #use glob to get only those files containing 'red'...
-    sampled_hod_loc = "/home/navin/git/hod_red_blue/%s_binned_hods/"% method
+    sampled_hod_loc = "/home/navin/git/hod_red_blue/cfac1.0/%s_binned_hods/"% method
     cen_hod_loc, sat_hod_loc = [sampled_hod_loc+ x for x in galtype]
     
     #store HOD file_names based on colr-galtype in increasing brightness order 
@@ -232,12 +232,19 @@ if __name__=="__main__":
     #    #26Aug2020
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     
-   
-    for rbin,interp in zip([3,5,10],[False,False,False]):  
+
+    esdbool = 0,0,0
+    wpbool = 1,0,0
+    rbin = 3,5,10
+    interpbool = 0,0,0
+    for rb,esd_b,wp_b,int_b in zip(rbin,esdbool,wpbool,interpbool):  
         #03Sept2020
         #giving True to any one bin scheme will do since HOD interpolation uses the same data points for all bin sizes from hod_red_blue dir.  
-        esd_json(rbin, get_wp=True, get_esd=False, method="bestfit", save_interp_hod=interp)     
-        esd_json(rbin, get_wp=True, get_esd=False, method="fittingFunc", save_interp_hod=interp)     
+        if esd_b or wp_b or int_b:
+        #08Nov2020 - keeping get_esd for all three rbin values will be useless...since it does the same calculation thrice...break out of loop.   
+            esd_json(rb, get_wp=wp_b, get_esd=esd_b, method="bestfit", save_interp_hod=int_b)     
+            esd_json(rb, get_wp=wp_b, get_esd=esd_b , method="fittingFunc", save_interp_hod=int_b)     
+            #print(f"code ran for rb={rb}\n\n\n")
 
 
 
