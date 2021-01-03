@@ -3,9 +3,9 @@ import numpy as np
 import json
 from subprocess import call
 
-def plot_wp(method, f_type):
+def plot_wp(method, f_type, cfac):
     #theoretical calcuated values from AUM
-    with open(f'./wp/Wp_{method}_magbinned_colrdep.json','r') as f: 
+    with open(f'./wp/Wp_{method}_magbinned_colrdep_cfac{cfac}.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
     binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
@@ -59,6 +59,7 @@ def plot_wp(method, f_type):
     fig.text(0.5, 0.02, r"$r_p [h^{-1}$Mpc]", ha='center')#, fontsize=16)
     fig.text(0.04, 0.5, r"$W_p [h^{-1}$Mpc]", va='center', rotation='vertical')#, fontsize=16)
     # for common title to all the subplots
+    ax.set_title(f"cfac = {cfac}")
     call(f"mkdir -p ./wp",shell=True)
 
     ##used to parse json files exported from WebPlotDigitizer
@@ -71,9 +72,9 @@ def plot_wp(method, f_type):
     #    for j in range(data_size-1):
     #        x[j] = d['datasetColl'][i]['data'][j]['value'][0]
     #        y[j] = d['datasetColl'][i]['data'][j]['value'][1]
-    plt.savefig(f"./wp/{method}_Wp_allbins.{f_type}")
+    plt.savefig(f"./wp/{method}_Wp_allbins_cfac{cfac}.{f_type}")
             
 if __name__=="__main__":
     for key in ['bestfit','fittingFunc']:
-        plot_wp(key,f_type='pdf')
+        plot_wp(key,f_type='png',cfac=1.0)
             
