@@ -1,0 +1,2 @@
+These ESD signals are specific to Niladri's Global HODs & nyu_samples! How?
+>>> since we used the same HOD model(TINK=2) used in Niladri's work and we used the best fit parameters of his Global Likelihood Analysis.

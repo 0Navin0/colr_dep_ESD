@@ -1,6 +1,6 @@
 # an extension of code in "Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/plotSignal1.py"  
 
-# variables to play with: base, rbin/ run, pofz 
+# variables to play with: surveyname, base, rbin/ run, pofz, base0(theoretical esd signal location) 
 # the location of json file for esd signal is fixed now...only need to give it 'run' and 'pofz' to access the right file.
 # name of config file should always end with "config" ------> NOT USING ANYMORE insdead...I access the ifrandom and pofz from the directory structure itself..which is anyways coming from the actual config file
 
@@ -11,23 +11,24 @@ from astropy.io import fits
 import json
 from subprocess import call
 import yaml
+import pandas as pd
 
-def plot_esd(rbin, method, single):
+def plot_esd(rbin, method, single, random='noRandom', pfz='fullpofz', surveyname='nyu_samples'):
+    """supply  run,random and pfz to chose which pipeline output dir gets plotted."""
+    #surveyname: to extend this code to include other theoretical HODs(here:Niladri's model for nyu data) and its plot.
+    # put '*' for all possibilities of random and pfz
 
     #return a list of pipeline outputs with same rbin
-    def pipelineoutput_rbin(rbin):
-        return glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*rbin{rbin}*")
+    def pipelineoutput_surveyname_rbin(surveyname, rbin, pofz=pfz, ifrandom=random):
+        return glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{surveyname}/{pofz}/run*{ifrandom}*rbin{rbin}*{pofz}")
 
-    def pipelineoutput_ifrandom_rbin_pofz(rbin,pofz,ifrandom="noRandom"):
-        #in future if you have more than one files for one rbin,pofz...may be say for - lens galaxies from another survey 'type'...
-        #...(here: nyu-vagc) then throw all those cases along with 'run*' in the below code. 
-        return glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*{ifrandom}*rbin{rbin}_{pofz}")[0]
+    def pipelineoutput_surveyname_rbin_pofz_ifrandom(surveyname,rbin,pofz,ifrandom="noRandom"):
+        #for pinpointedly single outpout dir
+        return glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{surveyname}/{pofz}/run*{ifrandom}*rbin{rbin}*{pofz}")[0]
     
     #read the theoretical signal
-    #fixed dir tree. try not to alter it.---26Aug2020, 03Sept2020
-    #base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run{run}*/signal_dr72safe_bin*")[0]
-    #base0 = glob(f"/home/navin/git/colr_dep_ESD/{pofz}/run*{run}*{pofz}")[0] #03Sept2020
-    base0 = glob(f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal")[0] #03Sept2020
+    #fixed dir tree. try not to alter it.
+    base0 = glob(f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal")[0] 
     with open(f'{base0}/esd_{method}_magbinned_colrdep_rbin{rbin}.json','r') as f: 
         dic = json.load(f)
     magbin = np.array(list(dic.keys()))
@@ -38,98 +39,97 @@ def plot_esd(rbin, method, single):
     sample_base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/col_dep_filter_fits/post_catalog.dr72safe'
     identifier = [7,8,9,10]
     colour = ['red','blue']
-#------------------------------------------------------------------    
-    #fixed dir tree. try not to alter it.---26Aug2020
-    #open config file
-    #no need to store config file for every run. I'll try to extract the required info from the tree structure itself..like below
-    #with open(glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/*config*")[0], "r") as yamlfile:
-    #    config = yaml.load(yamlfile)
-    #outputdir = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*")[0] #03Sept2020
-         
-    #base = '/home/navin/Tractwise_data/nyu-vagc/iditSmaples/result_weaklen_pipeline/signal_dr72safe'
-    #base = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal*")[0]+'/signal_dr72safe' #26Aug2020
-#-------------now I don't do plotting for specific 'run' but now for all runs in an 'rbin'...so looping over 'outputdir' now.------    
 
     d = {True:'single', False:'overplot'}
 
-    for outputdir in pipelineoutput_rbin(rbin): 
+    for outputdir in pipelineoutput_surveyname_rbin(surveyname,rbin): 
+        ifrandom, pofz = outputdir.split('_')[-3], outputdir.split('_')[-1]
+
+        ##-------comment this block if you want errDeltaSigma from noRandom files.-------#
+        ## modify this if you want nofullpofz plots too.
+        #if (ifrandom!=random) or (pofz!="fullpofz"):   
+        #    print(ifrandom,pofz)
+        #    continue
+        ##-------------------------------------------------------------------------------#A
+
         #keep all the plots for a given rbin in one place-->easy to compare
         plotdir = f"/home/navin/git/colr_dep_ESD/Obesrved_signal/rbin{rbin}/" + outputdir.split("/")[-1]
         print("\n\n#***********************************************")
         print(f"pipeline outputdir:{outputdir}")
-        print(f"ceating {plotdir}")
+        print(f"creating {plotdir}")
         call(f"mkdir -p {plotdir}",shell=True)
-        ifrandom, pofz = outputdir.split('_')[-3], outputdir.split('_')[-1]
-        #observed signal from here...pipeline output 
-        base = outputdir + '/signal_dr72safe' #03Sept2020
-        #debug step: for which pipeline ouput file?
-        print(f"\nifrandom={ifrandom}, pofz={pofz}, rbin={rbin}, method={method}, single={d[single]}")
+
+        #pipeline output: the observed signal
+        base = outputdir + '/signal_dr72safe'
+        #debug step: for which pipeline-ouput file?
+        print(f"\nmethod={method}, single={d[single]}")
+        print("Error bars from: random-->%s*"%base)
 
         for tag in identifier:
-            #fig,axes = plt.subplots(nrows=2,ncols=2)
-            #for ii,colr in zip(range(len(axes)),colour): #accessing one row at a time. 
             if single==False:
                 #for both colr on the same plot 
                 fig,axes = plt.subplots(1,1)
 
             for colr in colour:
-                # get info of samples to be plotted from the red/blue filtered fits files
+                # get info of samples to be plotted from the red/blue-filtered fits files
+                # getting the info of color and magnitude cut wise place-holder information from the actual lens data.
                 hdul = fits.open('%s%d.%s.fits'%(sample_base,tag,colr))
                 hdr = hdul[0].header
-                leg1 = "abs_mag_bin:(%s,%s)"%(hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3])
+                leg1 = "abs_mag_bin:[%s,%s]"%(hdr['absmmax'][-8:-3],hdr['absmmin'][-8:-3])
                 leg2 = "z-bin: %s" %hdr['z_bin'].split('-')[0][:4]+'-'+(hdr['z_bin'].split('-')[1][:4])
                 leg3 = '%s galaxy sample'%colr
                 print(f"#--------------color changed to {colr}-----------")
-                print("Infromation of observed signal from weaklens pipeline(Credit:Surhud M.):")
+                print("Infromation of observed signal from weaklens pipeline(Author:Surhud M.):")
 
-                # get data from weaklensing pipeline output to plot
+                # plot weak lensing signals with intrinsic shears removed: get errDeltaSigma_rand from ifrandom=random files.
                 if ifrandom == 'random':
-                    #random rotated pipeline output
-                    errDeltaSigma_rand = np.loadtxt('%s%d_%s.dat'%(base,tag,colr),usecols=(11),unpack=True)
-                    print("from 'outputdir' as printed above: 'random'-->%s%d_%s.dat"%(base,tag,colr))
-                    # not checking  ~np.isnan(deltasigma_rand) & ~np.isnan(r_rand) & 
-                    notnan_r = ~np.isnan(errDeltaSigma_rand) 
-                    #not checking for ~(deltasigma_rand<0) because due to random rotations, the signal is expected to become very small. and may even go negative in many cases.
-                    #all I care about is the errorbar after doing random rotations.
-                    positives_r = ~(errDeltaSigma_rand<0) 
+                    #random rotated error bars from covariance matrices
+                    try:
+                        dferr = pd.read_csv(f'{outputdir}/cov_mat/stddev_nyu')
+                    except:
+                        sys.exit("dferr file doesn't not exist.")
+                    ##not checking for ~(deltasigma_rand<0) because due to random rotations, the signal is expected to become very small. and may even go negative in many cases.
+                    ##all I care about is the errorbar after doing random rotations.
+                    #positives_r = ~(errDeltaSigma_rand<0) 
 
                     #all conditions same like pofz,corrections etc except that 'noRandom' this time.
-                    rebase = pipelineoutput_ifrandom_rbin_pofz(rbin,pofz,ifrandom="noRandom") + '/signal_dr72safe' #04Sept2020  
+                    rebase = pipelineoutput_surveyname_rbin_pofz_ifrandom(surveyname,rbin,pofz,ifrandom="noRandom") + '/signal_dr72safe' #04Sept2020  
                     deltasigma,r,errDeltaSigma = np.loadtxt('%s%d_%s.dat'%(rebase,tag,colr),usecols=(5,7,11),unpack=True)
-                    print("noRandom-->%s%d_%s.dat"%(rebase,tag,colr))
-                    print(f"tag={tag}, color={colr}, {leg1}\nNo of nan values in \"{colr}\" deltasigma,r,errDeltaSigma,errDeltaSigma_rand: {np.sum(np.isnan(deltasigma))},{np.sum(np.isnan(r))},{np.sum(np.isnan(errDeltaSigma))}, {np.sum(np.isnan(errDeltaSigma_rand))}")
-                    print(f"No of negative points in\"{colr}\" deltasigma,errDeltaSigma,errDeltaSigma_rand: {np.sum(deltasigma<0)},{np.sum(errDeltaSigma<0)},{np.sum(errDeltaSigma_rand<0)}\n" )
+                    print("signal from: noRandom-->%s%d_%s.dat"%(rebase,tag,colr))
+                    #print(f"tag={tag}, color={colr}, {leg1}\nNo of nan values in \"{colr}\" deltasigma,r,errDeltaSigma,errDeltaSigma_rand: {np.sum(np.isnan(deltasigma))},{np.sum(np.isnan(r))},{np.sum(np.isnan(errDeltaSigma))}, {np.sum(np.isnan(errDeltaSigma_rand))}")
+                    #print(f"No of negative points in\"{colr}\" deltasigma,errDeltaSigma,errDeltaSigma_rand: {np.sum(deltasigma<0)},{np.sum(errDeltaSigma<0)},{np.sum(errDeltaSigma_rand<0)}\n" )
                     notnan = ~np.isnan(deltasigma) & ~np.isnan(r) & ~np.isnan(errDeltaSigma) 
                     #let's incldue negative singals too since, the error bar will account for how positive this signal can be!!
-                    positives = ~(errDeltaSigma<0) #~(deltasigma<0) 
+                    #positives = ~(errDeltaSigma<0) #~(deltasigma<0) 
 
                     #debug step: 
-                    print("Now specific details:")
-                    print("\nif the sizes of notnan_r!=notnan and positives_r!=positives; the number of data points that we get to plot further reduce due to random rotations.check for it and discuss!")
-                    print("why should random rotations cause negative values of ESD?\n")
+                    #print("Now specific details:")
+                    #print("\nif the sizes of notnan_r!=notnan and positives_r!=positives; the number of data points that we get to plot further reduce due to random rotations.check for it and discuss!")
+                    #print("why should random rotations cause negative values of ESD?\n")
                     #print('notnan_r',notnan_r)
                     #print('notnan',notnan)
                     #print('positives_r',positives_r)
                     #print('positives',positives)
-                    print("before filter errDeltaSigma_rand, notnan_r, positives_r-->", errDeltaSigma_rand, notnan_r, positives_r)
-                    errDeltaSigma_rand = errDeltaSigma_rand[notnan_r & positives_r & notnan & positives]
-                    print("after filter errDeltaSigma_rand-->",errDeltaSigma_rand)
+                    #print("before filter errDeltaSigma_rand, notnan_r, positives_r-->", errDeltaSigma_rand, notnan_r, positives_r)
+                    #errDeltaSigma_rand = errDeltaSigma_rand[notnan_r & positives_r & notnan & positives]
+                    #print("after filter errDeltaSigma_rand-->",errDeltaSigma_rand)
  
-                    print("\nbefore filter: deltasigma,errDeltaSigma,notnan,positives-->", deltasigma, errDeltaSigma, notnan, positives)
-                    deltasigma = deltasigma[notnan_r & positives_r & notnan & positives]
-                    errDeltaSigma = errDeltaSigma[notnan_r & positives_r & notnan & positives]                   
-                    r = r[notnan_r & positives_r & notnan & positives]
-                    print("after filter: deltasigma,errDeltaSigma-->", deltasigma, errDeltaSigma)
+                    #print("\nbefore filter: deltasigma,errDeltaSigma,notnan,positives-->", deltasigma, errDeltaSigma, notnan, positives)
+                    deltasigma = deltasigma[notnan] #& positives
+                    #errDeltaSigma = errDeltaSigma[notnan_r & positives_r & notnan & positives]                   
+                    r = r[notnan] #& positives
+                    errDeltaSigma = errDeltaSigma[notnan]                   
+                    print("after filter: deltasigma, noRandom errDeltaSigma-->", deltasigma, errDeltaSigma)
 
                     #debug step: is errDeltaSigma_rand > errDeltaSigma ?
                     #errDeltaSigma not to be used for plotting...use errDeltaSigma_rand
-                    print(f"\nafter filter-->is errDeltaSigma_rand > errDeltaSigma ?  {errDeltaSigma_rand > errDeltaSigma}")
+                    #print(f"\nafter filter-->is errDeltaSigma_rand > errDeltaSigma ?  {errDeltaSigma_rand > errDeltaSigma}")
 
-                    errDeltaSigma = errDeltaSigma_rand 
-                    print("\nshould match the above printed errDeltaSigma_rand", errDeltaSigma)
+                    errDeltaSigma = dferr["%d_%s"%(tag,colr)].values 
+                    print("\nerrDeltaSigma_rand", errDeltaSigma)
                 else:    
                     deltasigma,r,errDeltaSigma = np.loadtxt('%s%d_%s.dat'%(base,tag,colr),usecols=(5,7,11),unpack=True)
-                    print("noRandom-->%s%d_%s.dat"%(base,tag,colr))
+                    print("signal from: noRandom-->%s%d_%s.dat"%(base,tag,colr))
                     print(f"\ntag={tag}, color={colr}, {leg1}\nNo of nan values in \"{colr}\" deltasigma,r,errDeltaSigma: {np.sum(np.isnan(deltasigma))},{np.sum(np.isnan(r))},{np.sum(np.isnan(errDeltaSigma))}")
                     print(f"No of negative points in\"{colr}\" deltasigma,errDeltaSigma: {np.sum(deltasigma<0)},{np.sum(errDeltaSigma<0)}\n" )
                     notnan = ~np.isnan(deltasigma) & ~np.isnan(r) & ~np.isnan(errDeltaSigma)
@@ -154,6 +154,7 @@ def plot_esd(rbin, method, single):
 
                 if single==True:
                     # plotting one colr on one plot
+                    print("plotting the following errdeltasigma",errDeltaSigma)
                     fig,axes = plt.subplots(1,1)
                     axes.plot(rp, esd, label=f"Prediction:(by HOD model)Niladri et al.",c=colr) #marker='d', markerfacecolor='white',
                     axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', label='Observed: HSC_data', fmt='o', linewidth=1.5, capsize=5, capthick=2)
@@ -173,10 +174,12 @@ def plot_esd(rbin, method, single):
                     print(f"\nsaved plot as: " + plotdir + f"/{method}_{colr}_{hdr['absmmin'][-8:-3],hdr['absmmax'][-8:-3]}.png")
                 else:
                     # plotting red and blue on the same plot 
+                    print("plotting the following errdeltasigma",errDeltaSigma)
                     if colr=='blue':
                         axes.plot(rp, esd, label=f"Prediction:(HOD model)Niladri et al.",c=colr) #marker='d', markerfacecolor='white'
                         axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', label='Observed: HSC_data', fmt='o', linewidth=1.5, capsize=5, capthick=2)
                     else:
+                        print("plotting the following errdeltasigma",errDeltaSigma)
                         axes.plot(rp, esd, c=colr) #, marker='d',markerfacecolor='white'
                         axes.errorbar(r, deltasigma, yerr=errDeltaSigma,c=colr, marker='o', fmt='o', linewidth=1.5, capsize=5, capthick=2)
             if single==False:
@@ -209,7 +212,7 @@ if __name__=="__main__":
     method = ['bestfit','fittingFunc']
     #rbin = 10 #5 #15  #change it as per the config file for weaklens_pipeline---older version.
 
-    for rbin in [3,5,10]:
+    for rbin in [5]: #[3,5,10]
         for ii in method:
             for jj,tt in zip((True,False),("single","overplot")): 
                 #tt unused.
@@ -227,3 +230,64 @@ Do you understan why would esd be negative theoretically? negative values also h
 ------->-ve values doesn't cause any problem in plotting since we are not taking log()of these numbers...only scale is in log.
 ------->But in ratio plots these -ve points are excluded.
 """
+
+'''A failed attempt to write a general plotting class generalising to different surverynames and x and y axis.
+
+class Plot:
+    """Plot based on some selective arguments like run#,pofz,random etc"""
+    def __init__(self, run=None, ifrandom=None, rbin=None, pofz=None, sample_type=None, base0=None, method=None):
+        """If any of these parameters are not given, will be given wildcard assignment '*'.
+           plot will be done for files selected by these parameters.
+           In this pipeline, run,sample_type are mandatory inputs. 
+           If in future, you need to make them non-mandatory then do: 
+           >>> self.run == '*' if run==None
+           and to make something else a mandatory input just remove the default wildcard 
+           '*' value at appropriate places like in def of 'pipelineoutput_rbin' etc
+
+           Turns out there's no need to change the base code for the above case instead do this:
+           >>> g = Plot(run='*', sample_type='hsc',pofz='full*', ifrandom='random', rbin=10)
+           >>> print(g.pipeout)
+        """
+        self.run           = run 
+        self.ifrandom      = ifrandom 
+        self.rbin          = rbin
+        self.pofz          = pofz 
+        self.base0         = base0
+        self.sample_type   = sample_type 
+        self.method        = method
+
+        # Even if i pass some additional kwargs during initiation of the class,
+        # and those class variables exist in the namespace of the class, they are 
+        # not accessible by doing self.some_arg_definedby_the_below_code
+        #for key,value in kwargs.items():
+        #    exec(f"self.{key}='{value}'")
+        #    print("if the extra passed keyword arguments are supposed to be integers then NOTICE: exec makes all the arguments here as strings.")
+
+        if self.run==None:
+            self.run = '*'
+        if self.ifrandom==None:
+            self.ifrandom = '*'
+        if self.rbin==None:
+            self.rbin = '*'
+        if self.pofz==None:
+        self.pofz = '*'
+
+        if sample_type == None:
+            sys.exit("'sample_type' is a mandatory input. e.g. sample_type='hsc'")
+
+    #get the pipeline output directories to plot the signal from there.
+    #08Feb21
+    self.pipeout = glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{self.sample_type}/{self.pofz}/run{self.run}_{self.ifrandom}_rbin{self.rbin}_{self.pofz}")
+    print(self.pipeout)
+
+    #read the theoretical esd signal
+    if (self.base0 == None) & (self.sample_type == 'nyu_vagc'):
+        
+        self.base0 = glob(f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal")[0] 
+        print(f"theoretical signal from {self.base0}")
+        with open(f'{self.base0}/esd_{self.method}_magbinned_colrdep_rbin{self.rbin}.json','r') as f: 
+            self.dic = json.load(f)
+        magbin = np.array(list(self.dic.keys()))
+        binmax = np.array([float(magbin[ii+1][:5]) for ii in range(len(magbin)-1)])
+        self.rp = self.dic['rp']
+'''

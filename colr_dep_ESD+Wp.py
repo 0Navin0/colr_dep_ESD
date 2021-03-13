@@ -17,7 +17,7 @@
 # supply these arrays appropriately to set the gsl_interpolation in hod.cpp
 # set up other input parameters to call wp_ESD func from hod.py
 # save and plot the wp_ESD signals for red/blue HODs...while using (best-fit) and (fitting func) separately...and also compare these two....Discuss with Surhud and Group!!  
-# similaryly calculate Wp_rp (clustering signal) in each bin for each color(red/blue).
+# similaryly calculate Wp_rp (clustering signal) in each mag bin for each color(red/blue).
 
 """Manual supply:""" 
 # sampled_hod_loc
@@ -114,7 +114,8 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit', save_interp_hod
         #base = '/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/signal_dr72safe_bin{rbin}/signal_dr72safe' #17Aug2020
         #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{pofz}/run{run}*/signal_dr72safe*"  #26Aug2020 # don't keep produced signals in different rbins in same "run#" dir.
         #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*fullpofz/rbin{rbin}/run*"  #03Sept2020
-        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*rbin{rbin}*" 
+        #base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/*/run*rbin{rbin}*" 
+        base = f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/nyu*/full*/run*noRandom*rbin{rbin}*" #13March21
         base = glob(base)[0]
         #debug step
         print(f"\n\nUsing {base} for projected radii bins.\n\n")
