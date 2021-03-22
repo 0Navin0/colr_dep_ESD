@@ -1,2 +1,8 @@
 These ESD signals are specific to Niladri's Global HODs & nyu_samples! How?
 >>> since we used the same HOD model(TINK=2) used in Niladri's work and we used the best fit parameters of his Global Likelihood Analysis.
+
+Using_chopped_HODs_when_NtotIsLessThan_10**-2_for_nyu_gals ---> these theoretical signals were obtained to check if the galaxies with 
+<Ncen>~=<Ntot> < 10**-2, if ignored while interpolating while calculating ESD signals, then does this affect the ESD signals?
+Also we can go and check if the wp signals are also affected?
+
+Point is - if the signals are not affected then while using ASEEM's simulated galaxy and DM_particle catalog, we'll ignore those halos of masses m and below - which correspond to HOD value of 10**-2 and below. 

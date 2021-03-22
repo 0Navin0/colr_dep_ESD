@@ -1,0 +1,320 @@
+
+*-----------*
+0 red 0 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_red_-19.0--20.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_red_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:43/100, sat:83/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:43, sat:83, logM:43, 83
+logM	cen: 10.0-12.375757575757575	 sat: 10.961616161616162-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.00599632152816984, 0.06913541631995906, 0.0, 0.0, 0.0]
+ nsat=[3.040047984092135e-05, 0.09085368203096973, 0.7523300083588719, 7.961811383038528, 92.03582739423685]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=0.40997166892113107,avmass_tot=38.871950566829966
+
+*-----------*
+0 red 1 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_red_-20.0--21.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_red_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:75/100, sat:60/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:75, sat:60, logM:75, 60
+logM	cen: 11.414141414141413-15.6	 sat: 12.262626262626263-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.3342010599909582, 0.17674355618047338, 0.002102946516822229, 2.2651373062799138e-07]
+ nsat=[0.0, 0.0, 0.43555992655867004, 5.2750869084180465, 53.38837862374541]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=2.1344717968412024,avmass_tot=35.604694962758295
+
+*-----------*
+0 red 2 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_red_-21.0--22.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_red_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:100/100, sat:75/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:100, sat:75, logM:100, 75
+logM	cen: 10.0-15.6	 sat: 11.414141414141413-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[7.287457068346268e-06, 0.015654739183104997, 0.3740458868264254, 0.3070692562075724, 0.00502814890851964]
+ nsat=[0.0, 5.409818457725518e-05, 0.032855598808960676, 0.9848053002550597, 17.51473605193383]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=11.678617476776237,avmass_tot=40.12649540275285
+
+*-----------*
+0 red 3 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_red_-22.0--23.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_red_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:89/100, sat:54/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:89, sat:54, logM:89, 54
+logM	cen: 10.622222222222222-15.6	 sat: 12.602020202020203-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[7.34937568901539e-14, 3.4578332645017997e-07, 0.0052892856736495185, 0.39463667271441266, 0.7610236483913675]
+ nsat=[0.0, 0.0, 5.5831493960431105e-08, 0.002399370104880023, 1.1964633629634354]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=97.5509570447586,avmass_tot=110.81017793038747
+
+*-----------*
+1 blue 0 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_blue_-19.0--20.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_blue_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:43/100, sat:83/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:43, sat:83, logM:43, 83
+logM	cen: 10.0-12.375757575757575	 sat: 10.961616161616162-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.014338211986455348, 0.16531439321766475, 0.0, 0.0, 0.0]
+ nsat=[1.3028777074680581e-05, 0.038937292298987035, 0.32242714643951653, 3.4122048784450842, 39.443926026101515]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=0.4099716689211311,avmass_tot=12.64308617313994
+
+*-----------*
+1 blue 1 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_blue_-20.0--21.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_blue_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:75/100, sat:60/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:75, sat:60, logM:75, 60
+logM	cen: 11.414141414141413-15.6	 sat: 12.262626262626263-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.3580875759479088, 0.18937603488986857, 0.0022532514426415753, 2.4270345737888913e-07]
+ nsat=[0.0, 0.0, 0.14518664218622337, 1.7583623028060151, 17.79612620791513]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=2.1344717968412006,avmass_tot=15.552045499925118
+
+*-----------*
+1 blue 2 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_blue_-21.0--22.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_blue_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:100/100, sat:75/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:100, sat:75, logM:100, 75
+logM	cen: 10.0-15.6	 sat: 11.414141414141413-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[4.936830285982365e-06, 0.01060517952881001, 0.2533944344526859, 0.20802164454927416, 0.0034062798011984725]
+ nsat=[0.0, 1.2689697616887023e-05, 0.007706868856422869, 0.23100371240550777, 4.108394876379538]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=11.678617476776248,avmass_tot=22.90229941866785
+
+*-----------*
+1 blue 3 ('/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/cen/Ncen_blue_-22.0--23.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/bestfit_binned_hods/sat/Nsat_blue_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:89/100, sat:54/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/bestfit_binned_hods/cen(or sat)
+cen:89, sat:54, logM:89, 54
+logM	cen: 10.622222222222222-15.6	 sat: 12.602020202020203-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[1.5990220117561894e-14, 7.523294136650525e-08, 0.0011508030853931387, 0.08586208584488751, 0.16557781459772236]
+ nsat=[0.0, 0.0, 1.1394182440904303e-09, 4.896673683428621e-05, 0.024417619652315033]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/
+
+avmass_cen=97.55095704475868,avmass_tot=98.82218480468093
+
+*-----------*
+0 red 0 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_red_-19.0--20.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_red_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:64/100, sat:74/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:64, sat:74, logM:64, 74
+logM	cen: 10.0-13.563636363636363	 sat: 11.470707070707071-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.002390620459343132, 0.12969864806431347, 2.6554706942697944e-08, 0.0, 0.0]
+ nsat=[0.0, 0.06622262836249562, 0.7381752728522171, 8.87728577162872, 107.84051582407292]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=0.4653672724745685,avmass_tot=40.633512225579764
+
+*-----------*
+0 red 1 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_red_-20.0--21.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_red_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:79/100, sat:65/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:79, sat:65, logM:79, 65
+logM	cen: 11.187878787878788-15.6	 sat: 11.97979797979798-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.272167947205635, 0.15408269344132222, 0.0010983473094881952, 4.6679208223612864e-08]
+ nsat=[0.0, 0.0008196334911635122, 0.38887595066205005, 4.569373056039421, 48.997849887520026]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=2.10767779299163,avmass_tot=34.54817612758281
+
+*-----------*
+0 red 2 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_red_-21.0--22.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_red_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:100/100, sat:55/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:100, sat:55, logM:100, 55
+logM	cen: 10.0-15.6	 sat: 12.545454545454545-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[5.887580890650257e-06, 0.017226565337607132, 0.40425542662952985, 0.31751220116207307, 0.00678681179589417]
+ nsat=[0.0, 0.0, 0.021909677952018522, 0.9740974215582131, 18.78276105768666]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=11.34529451487462,avmass_tot=39.40236037682595
+
+*-----------*
+0 red 3 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_red_-22.0--23.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_red_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:91/100, sat:46/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:91, sat:46, logM:91, 46
+logM	cen: 10.50909090909091-15.6	 sat: 13.054545454545455-15.6
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[3.614927947015414e-13, 6.809021968903872e-07, 0.006122611580999533, 0.38452827845139465, 0.7566986608163503]
+ nsat=[0.0, 0.0, 0.0, 0.009081197246068982, 1.1102361064499304]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=95.30169221795924,avmass_tot=108.6614951480476
+
+*-----------*
+1 blue 0 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_blue_-19.0--20.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_blue_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:64/100, sat:74/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:64, sat:74, logM:64, 74
+logM	cen: 10.0-13.563636363636363	 sat: 11.470707070707071-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.005013395475428533, 0.27199240801004865, 5.568815707133722e-08, 0.0, 0.0]
+ nsat=[0.0, 0.02838112644106956, 0.3163608312223788, 3.804551044983738, 46.217363924602665]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=0.46536727247456855,avmass_tot=13.241028460572329
+
+*-----------*
+1 blue 1 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_blue_-20.0--21.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_blue_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:79/100, sat:65/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:79, sat:65, logM:79, 65
+logM	cen: 11.187878787878788-15.6	 sat: 11.97979797979798-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.29300186360063735, 0.16587741793416594, 0.0011824236169795544, 5.025240900460302e-08]
+ nsat=[0.0, 0.0002732111637211706, 0.12962531688735002, 1.5231243520131403, 16.332616629173344]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=2.107677792991629,avmass_tot=15.114200847153977
+
+*-----------*
+1 blue 2 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_blue_-21.0--22.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_blue_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:100/100, sat:55/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:100, sat:55, logM:100, 55
+logM	cen: 10.0-15.6	 sat: 12.545454545454545-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[3.907672424491611e-06, 0.011433520080440983, 0.2683101620905004, 0.21073743120727315, 0.004504504956721015]
+ nsat=[0.0, 0.0, 0.005139307173930267, 0.22849198777291407, 4.4058328406919305]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=11.345294514874615,avmass_tot=22.41472161175627
+
+*-----------*
+1 blue 3 ('/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/cen/Ncen_blue_-22.0--23.0.csv', '/home/navin/git/hod_red_blue/cfac1.0/fittingFunc_binned_hods/sat/Nsat_blue_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:91/100, sat:46/100
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/hod_red_blue/fittingFunc_binned_hods/cen(or sat)
+cen:91, sat:46, logM:91, 46
+logM	cen: 10.50909090909091-15.6	 sat: 13.054545454545455-15.6
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[7.98019463961037e-14, 1.5031370310464543e-07, 0.0013516073580235196, 0.08488718313209974, 0.1670462782483018]
+ nsat=[0.0, 0.0, 0.0, 0.00018533055604222422, 0.022657879723467986]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/
+
+avmass_cen=95.30169221795921,avmass_tot=96.582586773226

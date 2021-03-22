@@ -1,0 +1,5 @@
+modelled_HOD_interpolated/bestfit --> interpolated HODs using AUM (ouput of colr_dep_ESD+Wp.py) using the modelled 'BESTFIT' HODs of Nilardir's model 
+
+modelled_HOD_interpolated/fittingFunc--> interpolated HODs using AUM (ouput of colr_dep_ESD+Wp.py) using the modelled 'FITTING FUNCTION' HODs of Nilardir's model.
+
+chopped_both_HODs_when_NtotIsLessThan_10**-2 --> ouput of colr_dep_ESD+Wp.py which chopped the above bestfit and fittingFunc HODs for <Ntot> < 10**-2 repectively.

@@ -1,0 +1,320 @@
+
+*-----------*
+0 red 0 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_red_-19.0--20.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_red_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:238/600, sat:464/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:132, sat:455, logM:132, 455
+logM	cen: 11.059999999999977-12.36999999999995	 sat: 11.059999999999977-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.06913541631995904, 0.0, 0.0, 0.0]
+ nsat=[0.0, 0.09085368203096973, 0.7523300083588719, 7.961811383038528, 92.03582739423685]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=0.41868949841744957,avmass_tot=39.34821293252969
+
+*-----------*
+0 red 1 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_red_-20.0--21.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_red_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:419/600, sat:334/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:401, sat:334, logM:401, 334
+logM	cen: 11.599999999999966-15.59999999999988	 sat: 12.269999999999952-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.3342010599909583, 0.17674355618047338, 0.002102946516822229, 2.2651373062799138e-07]
+ nsat=[0.0, 0.0, 0.4355599265586701, 5.2750869084180465, 53.38837862374541]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=2.1502669729071537,avmass_tot=35.81703082683926
+
+*-----------*
+0 red 2 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_red_-21.0--22.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_red_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:561/600, sat:419/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:369, sat:369, logM:369, 369
+logM	cen: 11.919999999999959-15.59999999999988	 sat: 11.919999999999959-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.015654739183104997, 0.3740458868264254, 0.3070692562075724, 0.00502814890851964]
+ nsat=[0.0, 5.4098184577255074e-05, 0.032855598808960676, 0.9848053002550597, 17.51473605193383]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=12.232685759011844,avmass_tot=41.721640734714924
+
+*-----------*
+0 red 3 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_red_-22.0--23.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_red_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:498/600, sat:300/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:251, sat:251, logM:251, 251
+logM	cen: 13.099999999999934-15.59999999999988	 sat: 13.099999999999934-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.0, 0.0, 0.3946366727144126, 0.7610236483913675]
+ nsat=[0.0, 0.0, 0.0, 0.0023993701048800205, 1.1964633629634354]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=103.31602586848099,avmass_tot=117.27803128899846
+
+*-----------*
+1 blue 0 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_blue_-19.0--20.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_blue_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:238/600, sat:464/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:141, sat:464, logM:141, 464
+logM	cen: 10.96999999999998-12.36999999999995	 sat: 10.96999999999998-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.014338211986455348, 0.16531439321766478, 0.0, 0.0, 0.0]
+ nsat=[1.3028777074680581e-05, 0.038937292298987035, 0.3224271464395166, 3.4122048784450842, 39.443926026101536]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=0.4186891109410408,avmass_tot=12.918983785860076
+
+*-----------*
+1 blue 1 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_blue_-20.0--21.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_blue_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:419/600, sat:334/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:401, sat:334, logM:401, 334
+logM	cen: 11.599999999999966-15.59999999999988	 sat: 12.269999999999952-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.35808757594790874, 0.18937603488986857, 0.0022532514426415753, 2.4270345737888913e-07]
+ nsat=[0.0, 0.0, 0.14518664218622337, 1.7583623028060151, 17.79612620791513]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=2.1502669729071515,avmass_tot=15.670144284857873
+
+*-----------*
+1 blue 2 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_blue_-21.0--22.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_blue_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:561/600, sat:419/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:362, sat:362, logM:362, 362
+logM	cen: 11.989999999999958-15.59999999999988	 sat: 11.989999999999958-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.010605179528810006, 0.25339443445268595, 0.20802164454927416, 0.0034062798011984725]
+ nsat=[0.0, 1.2689697616886996e-05, 0.007706868856422869, 0.2310037124055077, 4.108394876379538]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=12.232685517717671,avmass_tot=23.932438672937042
+
+*-----------*
+1 blue 3 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen/Ncen_blue_-22.0--23.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/sat/Nsat_blue_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:498/600, sat:300/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/bestfit/cen(or sat)
+cen:224, sat:224, logM:224, 224
+logM	cen: 13.369999999999928-15.59999999999988	 sat: 13.369999999999928-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.0, 0.0, 0.08586208584488751, 0.16557781459772242]
+ nsat=[0.0, 0.0, 0.0, 4.896673683428621e-05, 0.024417619652315033]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/bestfit
+
+avmass_cen=112.3885652960131,avmass_tot=113.84794117915092
+
+*-----------*
+0 red 0 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_red_-19.0--20.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_red_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:357/600, sat:413/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:245, sat:413, logM:245, 413
+logM	cen: 11.119999999999976-13.559999999999924	 sat: 11.479999999999968-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.12969864806431353, 2.6554706942697944e-08, 0.0, 0.0]
+ nsat=[0.0, 0.06622262836249562, 0.7381752728522171, 8.877285771628719, 107.84051582407281]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=0.47181078239420265,avmass_tot=41.055219561805146
+
+*-----------*
+0 red 1 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_red_-20.0--21.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_red_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:442/600, sat:363/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:405, sat:363, logM:405, 363
+logM	cen: 11.559999999999967-15.59999999999988	 sat: 11.979999999999958-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.272167947205635, 0.15408269344132222, 0.0010983473094881952, 4.6679208223612864e-08]
+ nsat=[0.0, 0.0008196334911635122, 0.38887595066205, 4.569373056039421, 48.997849887520026]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=2.120092000645679,avmass_tot=34.704091522635345
+
+*-----------*
+0 red 2 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_red_-21.0--22.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_red_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:561/600, sat:306/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:370, sat:306, logM:370, 306
+logM	cen: 11.90999999999996-15.59999999999988	 sat: 12.549999999999946-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.017226565337607126, 0.40425542662952985, 0.317512201162073, 0.00678681179589417]
+ nsat=[0.0, 0.0, 0.021909677952018522, 0.974097421558213, 18.78276105768665]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=11.863169154109091,avmass_tot=40.96055510253837
+
+*-----------*
+0 red 3 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_red_-22.0--23.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_red_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:510/600, sat:255/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:253, sat:253, logM:253, 253
+logM	cen: 13.079999999999934-15.59999999999988	 sat: 13.079999999999934-15.59999999999988
+red_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.0, 0.0, 0.3845282784513947, 0.7566986608163503]
+ nsat=[0.0, 0.0, 0.0, 0.009081197246068982, 1.1102361064499306]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=99.26651151631012,avmass_tot=113.04323227400484
+
+*-----------*
+1 blue 0 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_blue_-19.0--20.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_blue_-19.0--20.0.csv') -19.0--20.0 0.05
+fraction of positive points in modeled HODs:
+cen:357/600, sat:413/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:251, sat:413, logM:251, 413
+logM	cen: 11.059999999999977-13.559999999999924	 sat: 11.479999999999968-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.27199240801004865, 5.568815707133722e-08, 0.0, 0.0]
+ nsat=[0.0, 0.02838112644106956, 0.31636083122237885, 3.804551044983738, 46.21736392460269]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=0.4673350299109223,avmass_tot=13.30195667361365
+
+*-----------*
+1 blue 1 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_blue_-20.0--21.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_blue_-20.0--21.0.csv') -20.0--21.0 0.055
+fraction of positive points in modeled HODs:
+cen:442/600, sat:363/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:406, sat:363, logM:406, 363
+logM	cen: 11.549999999999967-15.59999999999988	 sat: 11.979999999999958-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.29300186360063735, 0.16587741793416594, 0.0011824236169795544, 5.025240900460302e-08]
+ nsat=[0.0, 0.0002732111637211706, 0.12962531688735004, 1.5231243520131403, 16.332616629173344]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=2.1200918563502187,avmass_tot=15.201701499297075
+
+*-----------*
+1 blue 2 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_blue_-21.0--22.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_blue_-21.0--22.0.csv') -21.0--22.0 0.12300000000000001
+fraction of positive points in modeled HODs:
+cen:561/600, sat:306/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:363, sat:306, logM:363, 306
+logM	cen: 11.979999999999958-15.59999999999988	 sat: 12.549999999999946-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.011433520080440978, 0.26831016209050035, 0.21073743120727315, 0.004504504956721015]
+ nsat=[0.0, 0.0, 0.005139307173930267, 0.22849198777291407, 4.4058328406919305]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=11.863169222152958,avmass_tot=23.39694134381729
+
+*-----------*
+1 blue 3 ('/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen/Ncen_blue_-22.0--23.0.csv', '/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/sat/Nsat_blue_-22.0--23.0.csv') -22.0--23.0 0.187
+fraction of positive points in modeled HODs:
+cen:510/600, sat:255/600
+Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
+In some mag bins negatives come for low mass halos while for some for high mass halos.
+Go and check: /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/fittingFunc/cen(or sat)
+cen:225, sat:225, logM:225, 225
+logM	cen: 13.359999999999928-15.59999999999988	 sat: 13.359999999999928-15.59999999999988
+blue_hod,for mass in [11. 12. 13. 14. 15.]
+ncen=[0.0, 0.0, 0.0, 0.08488718313209974, 0.1670462782483018]
+ nsat=[0.0, 0.0, 0.0, 0.00018533055604222422, 0.022657879723468]
+
+.
+.
+.
+saving the interpolated HODs for testing purposes with 600 interpolated points in /home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/fittingFunc
+
+avmass_cen=111.6078364434172,avmass_tot=113.07333282330154

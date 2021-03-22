@@ -91,7 +91,12 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit', save_interp_hod
     #set up sampled hod locations
     galtype=['cen','sat']
     colr=["red","blue"] #use glob to get only those files containing 'red'...
-    sampled_hod_loc = "/home/navin/git/hod_red_blue/cfac1.0/%s_binned_hods/"% method
+
+    
+    #sampled_hod_loc = "/home/navin/git/hod_red_blue/cfac1.0/%s_binned_hods/"% method # Nilari's modelled hod
+    ##interpolated hods called to further produce chopped hods for Ntot < 10**-2
+    #sampled_hod_loc = f"/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/{method}/" #comment it if you don't want to read from interpolated HODs
+    sampled_hod_loc = f"/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/{method}/"
     cen_hod_loc, sat_hod_loc = [sampled_hod_loc+ x for x in galtype]
     
     #store HOD file_names based on colr-galtype in increasing brightness order 
@@ -157,18 +162,25 @@ def esd_json(rbin, get_wp=False, get_esd=True, method='bestfit', save_interp_hod
             print(f"fraction of positive points in modeled HODs:\ncen:{hod0[hod0>0].size}/{hod0.size}, sat:{hod1[hod1>0].size}/{hod1.size}")
             print(f"""Negatives and zeros are to be removed. Zeros give divisionbyzeroError, negatives are unphysical. 
 In some mag bins negatives come for low mass halos while for some for high mass halos.
-Go and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)""")
+Go and check: {sampled_hod_loc}cen(or sat)""")
 
-            #idx = (hod0>0) & (hod1>0)
-            #logM = logM[idx]
-            #hod0 = hod0[idx]
-            #hod1 = hod1[idx]
-           
             #removing the zeros and negatives -> cen and sat have different number of points for interpolation. 
             idx0 = hod0>0
             idx1 = hod1>0
             hod0 = hod0[idx0]
             hod1 = hod1[idx1]
+
+            ##to check effect of galaxies with hod<10**-2 in ESD signal
+            ##notice: i didn't just do: idx0 = ((hod0+hod1) >10**-2)
+            ##interpolator will see a lot of zeros which will get force interpolated for centrals at high mass ends.
+            ##similarly satellite hod will get a lot of zeros at low mass ends and will be force interpolated.
+            ##notice: i also didn't do: idx0 = ((hod0+hod1) >10**-2) & (hod0>0) & (hod1>0)
+            ##this will remove remove all the satellite hod points where the central has zero at high mass ends..causing a bad interpolation due to loss of info.
+            #idx0 = ((hod0+hod1) >10**-2) & (hod0>0)  
+            #idx1 = ((hod0+hod1) >10**-2) & (hod1>0)  
+            #hod0 = hod0[idx0]
+            #hod1 = hod1[idx1]
+
             print(f"cen:{hod0.size}, sat:{hod1.size}, logM:{logM[idx0].size}, {logM[idx1].size}")
             #print(f"cen:{h0},sat:{h1}")  
  
@@ -178,13 +190,25 @@ Go and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)""")
             ## debug step
             print(f"logM\tcen: {min(logM[idx0])}-{max(logM[idx0])}\t sat: {min(logM[idx1])}-{max(logM[idx1])}")
             #print("*-----------*")
-            print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\n nsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
+            print(f"{col}_hod,for mass in {np.arange(11.0,16.0,1.0)}\nncen={list( map(a.ncen,np.arange(11.0,16.0,1.0)))}\nnsat={list(map(a.nsat,np.arange(11.0,16.0,1.0)))}")
 
             if save_interp_hod:
-                print("\n.\n.\n.\nsaving the interpolated HODs for testing purposes with 500 interpolated points.\n")
-                np.savetxt(colr_pair[0].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.ncen,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[0].split('/')[-1]).split('_')[0:2])}", comments='#')   
-                np.savetxt(colr_pair[1].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.nsat,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[1].split('/')[-1]).split('_')[0:2])}", comments='#')   
-            print(f"avmass_cen={a.avmass_cen(z)},avmass_tot={a.avmass_tot(z)}")
+                ##location to save files
+                #cmd = f"/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/{method}" #15March21
+                #chopped version of interpolated HODs for Ntot < 10**-2
+                #cmd = f"/home/navin/git/colr_dep_ESD/interpolated_HODs_AUM/chopped_both_HODs_when_NtotIsLessThan_10**-2/{method}" #15March21
+
+                call(f"mkdir -p {cmd}/cen/",shell=True)  #15March21
+                call(f"mkdir -p {cmd}/sat/",shell=True)  #15March21
+
+                print("\n.\n.\n.\nsaving the interpolated HODs for testing purposes with 600 interpolated points in %s\n"%cmd)
+                try:
+                    np.savetxt(f"{cmd}/cen/" + colr_pair[0].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.ncen,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[0].split('/')[-1]).split('_')[0:2])}", comments='#')   #15March21   
+                    np.savetxt(f"{cmd}/sat/" + colr_pair[1].split('/')[-1], np.c_[np.arange(10.0,16.0,0.01), np.asarray(list( map(a.nsat,np.arange(10.0,16.0,0.01))))], delimiter=' ', header=f"logM {'hod_'+'_'.join((colr_pair[1].split('/')[-1]).split('_')[0:2])}", comments='#')   #15March21   
+                except:
+                    sys.exit("Destination directory for the interpolation HODs was not given, please provide that location consciously so that you don't overwrite some already interpolated file mistakenly.")
+            print(f"Average halo mass of central galaxies at the mean redshift z={z} of the sample, normalized by 1e12 hinv Msun.\tavmass_cen={a.avmass_cen(z)},")
+            print(f"Average halo mass of all galaxies at the mean redshift z={z} of the sample, normalized by 1e12 hinv Msun.\tavmass_tot={a.avmass_tot(z)}")
             
             if get_esd:
                 #print(f"esdbins:{esdbins}, projected radii={rp}")
@@ -204,19 +228,20 @@ Go and check: /home/navin/git/hod_red_blue/{method}_binned_hods/cen(or sat)""")
                 res1[mag_order[jj]].append({col:list(cls_sig)})
     if get_esd:
         call("mkdir -p ./Theoretical_ESD_signal", shell=True) #03Sept2020
-        #call("mkdir -p ./%s"% ('/'.join(base.split('/')[-3:])), shell=True) #26Aug2020
-        #call("mkdir -p ./bin{rbin}/{pofz}",shell=True) #17Aug2020 #older version
-        #with open(f"./bin{rbin}/{pofz}/esd_{method}_magbinned_colrdep.json", "w") as f:
-        #with open(f"./%s/esd_{method}_magbinned_colrdep.json"%('/'.join(base.split('/')[-3:])), "w") as f:
-        with open(f"./Theoretical_ESD_signal/esd_{method}_magbinned_colrdep_rbin%s.json"%rbin, "w") as f:
+        #esd_fil_name = f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal/esd_{method}_magbinned_colrdep_rbin%s.json"%rbin #standard place to store esd signals
+        esd_fil_name = f"/home/navin/git/colr_dep_ESD/Theoretical_ESD_signal/Using_chopped_HODs_when_NtotIsLessThan_10**-2_for_nyu_gals/esd_{method}_magbinned_colrdep_rbin%s.json"%rbin 
+
+        with open(esd_fil_name, "w") as f: #for signal from chopped HODs 16/03/21
              json.dump(res, f)
-             #print(f"esd file saved in: ./%s/esd_{method}_magbinned_colrdep.json\n\n\n"%('/'.join(base.split('/')[-3:])))
-             print(f"esd file saved in: ./Theoretical_ESD_signal/esd_{method}_magbinned_colrdep_rbin%s.json\n\n\n"%rbin)
+             print(f"esd file saved in: {esd_fil_name}\n\n\n")
     if get_wp:
-        call(f"mkdir -p ./wp",shell=True)
-        with open(f"./wp/Wp_{method}_magbinned_colrdep.json", "w") as f:
+        call("mkdir -p ./wp",shell=True)
+        #wp_fil_name = f"/home/navin/git/colr_dep_ESD/wp/Wp_{method}_magbinned_colrdep.json"%rbin #standard location to store wp signals
+        wp_fil_name = f"/home/navin/git/colr_dep_ESD/wp/Using_chopped_HODs_when_NtotIsLessThan_10**-2_for_nyu_gals/Wp_{method}_magbinned_colrdep_rbin%s.json"%rbin 
+
+        with open(wp_fil_name, "w") as f:
              json.dump(res1, f)
-             print(f"wp file saved in: ./wp/Wp_{method}_magbinned_colrdep.json\n\n\n")
+             print(f"wp file saved in: {wp_fil_name}\n\n\n")
 
 if __name__=="__main__":
     #In newer version, rbin is not needed. --26Aug2020
@@ -234,10 +259,10 @@ if __name__=="__main__":
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="bestfit")     
     #    esd_json(run, pofz, get_wp=False, get_esd=True, method="fittingFunc")     
 
-    esdbool = 0,0,0
-    wpbool = 1,0,0
-    rbin = 3,5,10
-    interpbool = 0,0,0
+    rbin = [5,10] #3,5,10 #15March21 to get only the interpolation points
+    esdbool = [1,1] #0,0,0
+    wpbool = [1,1] #0,0,0
+    interpbool = [0,0] #1,0,0
     for rb,esd_b,wp_b,int_b in zip(rbin,esdbool,wpbool,interpbool):  
         #03Sept2020
         #giving True to any one bin scheme will do since HOD interpolation uses the same data points for all bin sizes from hod_red_blue dir.  
