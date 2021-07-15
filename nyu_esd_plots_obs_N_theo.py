@@ -16,28 +16,30 @@ from subprocess import call
 import yaml
 import pandas as pd
 
+def select_pipelineoutput_by_args(surveyname, pofz, run, ifrandom, ran_itr, rbin, *subdirs):
+    """get a weaklens ouput dir by selecting arguments"""
+    #if 'run' for random and noRandom files are the same, then only supply 'run' while calling the func polt_esd().
+    #otherwise don't supply 'run' while calling plot_esd(), try to reach the required pipeline output dir without 'run'. 
+    #if you really need 'run' to get to the desired location, then supply 'run' argument for 'random' and 'noRandom' cases in pipelineoutput_random_noRandom_pair().
+
+    print(f"{len(subdirs)} number of extra subdirs are given.")
+    return  glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{surveyname}/{pofz}/{'/'.join(subdirs)+'/' if len(subdirs) else ''}run{run}_{ifrandom}{ran_itr}_rbin{rbin}_{pofz}")[0]
+
+def pipelineoutput_random_noRandom_pair(surveyname, pofz, run, ifrandom, ran_itr, rbin, *subdirs):
+    """ouput: output dir location for type: (random,noRandom) or (noRandom,noRandom)."""
+    try:
+        default = select_pipelineoutput_by_args(surveyname, pofz, run, ifrandom, ran_itr, rbin, *subdirs) 
+        #
+        other   = select_pipelineoutput_by_args(surveyname, pofz, run, 'noRandom',  ''  , rbin, *subdirs)
+    except:
+        sys.exit("No such file found in select_pipelineoutput_by_args().")
+
+    return default,other 
+
 def plot_esd(rbin, method, single, ifrandom='noRandom', surveyname='nyu_samples', pofz='fullpofz', run='*', ran_itr=''):
     """supply  run,random,pfz etc to chose which pipeline output dir gets plotted."""
     #surveyname: to extend this code to include other theoretical HODs(here:Niladri's model for nyu data) and its plot.
     # put '*' for all possibilities of random and pfz
-
-    def select_pipelineoutput_by_args(surveyname, pofz, run, ifrandom, ran_itr, rbin):
-        """get an weaklens ouput dir by selecting arguments"""
-        #if 'run' for random and noRandom files are the same, then only supply 'run' while calling the func polt_esd().
-        #otherwise don't supply 'run' while calling plot_esd(), try to reach the required pipeline output dir without 'run'. 
-        #if you really need 'run' to get to the desired location, then supply 'run' argument for 'random' and 'noRandom' cases in pipelineoutput_random_noRandom_pair().
-        return  glob(f"/home/navin/git/weaklens_pipeline_SM_edited/configs_n_signals/{surveyname}/{pofz}/run{run}_{ifrandom}{ran_itr}_rbin{rbin}_{pofz}")[0]
-
-    def pipelineoutput_random_noRandom_pair(surveyname, pofz, run, ifrandom, ran_itr, rbin):
-        """ouput: output dir location for type: (random,noRandom) or (noRandom,noRandom)."""
-        try:
-            default = select_pipelineoutput_by_args(surveyname, pofz, run, ifrandom, ran_itr, rbin) 
-            #
-            other   = select_pipelineoutput_by_args(surveyname, pofz, run=run, rbin=rbin, ifrandom='noRandom',ran_itr='')
-        except:
-            sys.exit("No such file found in select_pipelineoutput_by_args().")
-
-        return default,other 
 
     #read the theoretical signal
     #fixed dir tree. try not to alter it.
@@ -66,14 +68,14 @@ def plot_esd(rbin, method, single, ifrandom='noRandom', surveyname='nyu_samples'
 
     random, pfz = ifran_outputdir.split('_')[-3], ifran_outputdir.split('_')[-1]
     #keep all the plots for a given rbin in one place-->easy to compare
-    #plotdir = f"/home/navin/git/colr_dep_ESD/Obesrved_signal/rbin{rbin}/" + ifran_outputdir.split("/")[-1] #standard place to store the plots
-    plotdir = f"/home/navin/git/colr_dep_ESD/Obesrved_signal/Using_chopped_HODs_when_NtotIsLessThan_10**-2_for_nyu_gals/rbin{rbin}/" + ifran_outputdir.split("/")[-1] #chopped HODs, 16/03/21
+    #plotdir = f"/home/navin/git/colr_dep_ESD/Obesrved_signal/nyu/rbin{rbin}/" + ifran_outputdir.split("/")[-1] #standard place to store the plots
+    plotdir = f"/home/navin/git/colr_dep_ESD/Obesrved_signal/nyu/Using_chopped_HODs_when_NtotIsLessThan_10**-2_for_nyu_gals/rbin{rbin}/" + ifran_outputdir.split("/")[-1] #chopped HODs, 16/03/21
     print("\n\n#***********************************************")
     print(f"pipeline output dirs:\nrandom--->{ifran_outputdir}\nnoRandom--->{other_outputdir}\n")
     print(f"creating {plotdir}")
     call(f"mkdir -p {plotdir}",shell=True)
 
-    #pipeline output: the observed signal
+    #pipeline output: get errorbar from here.
     base = ifran_outputdir + '/signal_dr72safe'
     #debug step: for which pipeline-ouput file?
     print(f"\nmethod={method}, singleplot?={d[single]}")

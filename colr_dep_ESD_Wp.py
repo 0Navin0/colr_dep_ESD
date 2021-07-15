@@ -56,7 +56,7 @@ def getnparr(r,n):
         temp[i]=r[i]
     return temp
 
-def initializeHOD():   
+def initializeHOD(Om0=0.276, w0=-1, wa=0, Omk=0.0, hval=0.7, Omb=0.045, th=2.726, s8=0.811, nspec=0.961, ximax=np.log10(8.0), cfac=1.0, logMmin=13.0, siglogM=0.5, logMsat=14.0, alpsat=1.0, logMcut=13.5, csbycdm=1.0, fac=1.0):   
     # initialize cosmology class object
     # the following cosmo parameters are taken from Niladri's paper
     # what are w0, wa, ximax? 
@@ -64,24 +64,24 @@ def initializeHOD():
     # these params won't be used anyways since to get ncen and nsat, interpolation will be used.(TINK==2) 
     p = h.cosmo()
     q = h.hodpars()
-    p.Om0 = 0.276
-    p.w0 = -1
-    p.wa = 0
-    p.Omk = 0.0
-    p.hval = 0.7
-    p.Omb = 0.045
-    p.th = 2.726
-    p.s8 = 0.811
-    p.nspec = 0.961
-    p.ximax = np.log10(8.0)
-    p.cfac = 1.0
-    q.Mmin = 13.0 
-    q.siglogM = 0.5 
-    q.Msat = 14.0 
-    q.alpsat = 1.0 
-    q.Mcut = 13.5 
-    q.csbycdm = 1.0 
-    q.fac = 1.0
+    p.Om0     = Om0
+    p.w0      = w0
+    p.wa      = wa
+    p.Omk     = Omk
+    p.hval    = hval
+    p.Omb     = Omb
+    p.th      = th
+    p.s8      = s8
+    p.nspec   = nspec
+    p.ximax   = ximax
+    p.cfac    = cfac
+    q.Mmin    = logMmin 
+    q.siglogM = siglogM
+    q.Msat    = logMsat 
+    q.alpsat  = alpsat
+    q.Mcut    = logMcut
+    q.csbycdm = csbycdm
+    q.fac     = fac
      
     return h.hod(p, q) 
 
@@ -209,7 +209,7 @@ Go and check: {sampled_hod_loc}cen(or sat)""")
                     sys.exit("Destination directory for the interpolation HODs was not given, please provide that location consciously so that you don't overwrite some already interpolated file mistakenly.")
             print(f"Average halo mass of central galaxies at the mean redshift z={z} of the sample, normalized by 1e12 hinv Msun.\tavmass_cen={a.avmass_cen(z)},")
             print(f"Average halo mass of all galaxies at the mean redshift z={z} of the sample, normalized by 1e12 hinv Msun.\tavmass_tot={a.avmass_tot(z)}")
-            
+
             if get_esd:
                 #print(f"esdbins:{esdbins}, projected radii={rp}")
                 esdrp = getdblarr(rp)

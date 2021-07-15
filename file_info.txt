@@ -10,13 +10,13 @@ In these plots, I've removed those data points out of 15 for which I had 'nan' o
 
 bin5 ---> same thing for 5 radial bins
 bin10 ---> for 10 radial bins
-colr_dep_ESD+Wp.py : calculates ESD
+colr_dep_ESD_Wp.py : calculates ESD
                 : calculates Wp (updated on 07/08/20)
 
 wp.*.dat : measured of proj 2-pt correlation func. copied from https://arxiv.org/format/1005.2413. tex file is downloaded and stored @ ./Niladri_et_al 
 
 
-Wp_plot.py --> plots projected correlation function (clustering signal) obtained using colr_dep_ESD+Wp.py
+Wp_plot.py --> plots projected correlation function (clustering signal) obtained using colr_dep_ESD_Wp.py
 
 wpd_project.tar (not used anywhere...only to check if the plot in -23--22_blue bin by niladri has a mistake at rp=1.1 )---> observed clustering signals (without error bars) from different mag bins as used in Paul et al. --> by usin WebPlotDigitizer
 
